@@ -1,6 +1,6 @@
 ------------------------------------------------------
 -- Export file for user RPV                         --
--- Created by Administrator on 25-03-2020, 15:06:16 --
+-- Created by Administrator on 30-03-2020, 23:08:10 --
 ------------------------------------------------------
 
 set define off
@@ -105,8 +105,8 @@ create table RPV.ANEXOS
   ord_form_i NUMBER(2),
   anexo_id   NUMBER(1) not null,
   tip_i      VARCHAR2(1),
-  fich_true  VARCHAR2(100),
-  fich       BLOB
+  fich       BLOB,
+  fich_true  VARCHAR2(100)
 )
 tablespace TS_RPV_1
   pctfree 10
@@ -172,27 +172,6 @@ alter table RPV.ARTIGOS
   storage
   (
     initial 1032K
-    minextents 1
-    maxextents unlimited
-  );
-
-prompt
-prompt Creating table ARTIGOS_OBSOLETOS
-prompt ================================
-prompt
-create table RPV.ARTIGOS_OBSOLETOS
-(
-  cod_art VARCHAR2(2) not null,
-  des_art VARCHAR2(50) not null
-)
-tablespace TS_RPV_1
-  pctfree 10
-  pctused 40
-  initrans 1
-  maxtrans 255
-  storage
-  (
-    initial 64K
     minextents 1
     maxextents unlimited
   );
@@ -407,6 +386,28 @@ tablespace TS_RPV_1
     minextents 1
     maxextents unlimited
   );
+create index RPV.BIOMETRIA_INFO_I on RPV.BIOMETRIA_INFO (ANO_FORM, NUM_FORM)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 1M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.BIOMETRIA_INFO_III on RPV.BIOMETRIA_INFO (DAT_NASC, NUM_DOC_VIAGEM)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 1M
+    minextents 1
+    maxextents unlimited
+  );
 alter table RPV.BIOMETRIA_INFO
   add constraint BIOMETRIA_INFO_PK primary key (NUM_RECIBO)
   using index 
@@ -420,6 +421,9 @@ alter table RPV.BIOMETRIA_INFO
     minextents 1
     maxextents unlimited
   );
+alter table RPV.BIOMETRIA_INFO
+  add constraint BIOMETRIA_INFO_COD_ART_FK foreign key (COD_ART)
+  references RPV.ARTIGOS (COD_ART);
 alter table RPV.BIOMETRIA_INFO
   add constraint BIOMETRIA_INFO_COD_PAIS_FK foreign key (COD_NAC)
   references RPV.PAIS (COD_PAIS);
@@ -1428,7 +1432,8 @@ create table RPV.POSTO
   anexos            VARCHAR2(1),
   data_arranque_vis DATE,
   loa_id            VARCHAR2(10),
-  posto_vvtl        VARCHAR2(1)
+  posto_vvtl        VARCHAR2(1),
+  prefix_vis        NUMBER(4)
 )
 tablespace TS_RPV_1
   pctfree 10
@@ -1520,6 +1525,56 @@ alter table RPV.POSTO
 alter table RPV.POSTO
   add constraint POS_TRAT_FK foreign key (COD_TRAT)
   references RPV.TRATA_POSTO (COD_TRAT);
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
+alter table RPV.POSTO
+  add check ( circ_aut IN ( 'S' , 'N' )  );
 alter table RPV.POSTO
   add check ( circ_aut IN ( 'S' , 'N' )  );
 
@@ -2210,16 +2265,17 @@ create table RPV.FORMULARIO
   aud_previa             VARCHAR2(1),
   ind_grupo              VARCHAR2(1),
   grupo_estado           VARCHAR2(1),
+  cri_dat_est            VARCHAR2(10),
   consulta_vis           VARCHAR2(1),
   consulta_nsis          VARCHAR2(5),
   analisado_vis          VARCHAR2(1),
   verifica_indef         VARCHAR2(1),
-  enviou_alerta_verde    VARCHAR2(1),
   email_req              VARCHAR2(50),
   email_tut              VARCHAR2(50),
   telefone_tut           NUMBER(15),
   info_mot_esta          VARCHAR2(120),
-  ult_num_vin            VARCHAR2(12)
+  ult_num_vin            VARCHAR2(12),
+  enviou_alerta_verde    VARCHAR2(1)
 )
 tablespace TS_RPV_1
   pctfree 10
@@ -2388,6 +2444,17 @@ create index RPV.FOR_CONSULTA_VIS_II on RPV.FORMULARIO (CONSULTA_VIS, CONSULTA_N
     minextents 1
     maxextents unlimited
   );
+create index RPV.FOR_DAT_NASC_I on RPV.FORMULARIO (REF_FORM_2, DAT_NASC)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
 create index RPV.FOR_DOCS_FK_I on RPV.FORMULARIO (COD_DOC)
   tablespace TS_RPV_2
   pctfree 40
@@ -2407,6 +2474,17 @@ create index RPV.FOR_EMITE_VIN on RPV.FORMULARIO (REF_FORM_2, EMITE_VIN)
   storage
   (
     initial 10M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_EST_1 on RPV.FORMULARIO (CRI_DAT_EST)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
     minextents 1
     maxextents unlimited
   );
@@ -2451,6 +2529,28 @@ create index RPV.FOR_MOTESTA3_FK_I on RPV.FORMULARIO (COD_ESTA_3)
   storage
   (
     initial 16K
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_NUM_DOC_VIAG_NASC_I on RPV.FORMULARIO (NUM_DOC_VIAG)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_NUM_RECIBO_I on RPV.FORMULARIO (NUM_RECIBO)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 4280K
     minextents 1
     maxextents unlimited
   );
@@ -2594,6 +2694,28 @@ create index RPV.FOR_SCH_REF_FK_I on RPV.FORMULARIO (COD_PAIS_SCH_REF)
   storage
   (
     initial 4280K
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_TESTE_REP_I on RPV.FORMULARIO (CRI_DAT)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_TESTE2_REP_I on RPV.FORMULARIO (DAT_PED)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
     minextents 1
     maxextents unlimited
   );
@@ -2966,13 +3088,13 @@ create index RPV.FORMP_SCH_NACIONALIDADE_REFE_1 on RPV.FORM_P (COD_PAIS_SCH_REF_
 alter table RPV.FORM_P
   add constraint FORMP_PK primary key (ANO_FORM, NUM_FORM)
   using index 
-  tablespace TS_RPV_1
+  tablespace TS_RPV_2
   pctfree 10
   initrans 2
   maxtrans 255
   storage
   (
-    initial 64K
+    initial 4280K
     minextents 1
     maxextents unlimited
   );
@@ -4082,19 +4204,21 @@ prompt =======================
 prompt
 create table RPV.LOTE_VIN
 (
-  ano_lote NUMBER(4) not null,
-  num_lote NUMBER(6) not null,
-  cod_pos  NUMBER(4) not null,
-  ano_req  NUMBER(4) not null,
-  num_req  NUMBER(3) not null,
-  est_lote VARCHAR2(1) default 'P' not null,
-  dat_est  DATE not null,
-  lim_min  NUMBER(8) not null,
-  lim_max  NUMBER(8) not null,
-  cri_dat  VARCHAR2(20) not null,
-  cri_uti  VARCHAR2(30) not null,
-  ult_num  NUMBER(8),
-  ult_dat  DATE
+  ano_lote       NUMBER(4) not null,
+  num_lote       NUMBER(6) not null,
+  cod_pos        NUMBER(4) not null,
+  ano_req        NUMBER(4) not null,
+  num_req        NUMBER(3) not null,
+  est_lote       VARCHAR2(1) default 'P' not null,
+  dat_est        DATE not null,
+  lim_min        NUMBER(8) not null,
+  lim_max        NUMBER(8) not null,
+  cri_dat        VARCHAR2(20) not null,
+  cri_uti        VARCHAR2(30) not null,
+  ult_num        NUMBER(8),
+  ult_dat        DATE,
+  session_id     VARCHAR2(10),
+  uti_session_id VARCHAR2(6)
 )
 tablespace TS_RPV_1
   pctfree 10
@@ -4193,6 +4317,7 @@ create table RPV.VINHETA
   alt_uti      VARCHAR2(30),
   num_doc_viag VARCHAR2(20) not null,
   vin_para     VARCHAR2(50),
+  cri_dat_est  VARCHAR2(10),
   manual       VARCHAR2(1)
 )
 tablespace TS_RPV_1
@@ -4255,6 +4380,17 @@ create index RPV.VIN_DOCS_FK_I on RPV.VINHETA (DOC_VIAG)
     minextents 1
     maxextents unlimited
   );
+create index RPV.VIN_EST_1 on RPV.VINHETA (CRI_DAT_EST)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
 create index RPV.VIN_FOR_FK_I on RPV.VINHETA (ANO_FORM, NUM_FORM)
   tablespace TS_RPV_2
   pctfree 40
@@ -4285,6 +4421,17 @@ create index RPV.VIN_POS_FK_I on RPV.VINHETA (COD_POS)
   storage
   (
     initial 4280K
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.VIN_TESTE_REP_I on RPV.VINHETA (CRI_DAT)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
     minextents 1
     maxextents unlimited
   );
@@ -4494,6 +4641,17 @@ create index RPV.ENVIAR_FOR_FK_I on RPV.ENVIO (FOR_ANO_FORM, FOR_NUM_FORM)
   storage
   (
     initial 14416K
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.ENVIAR_FORMAP_FK_I on RPV.ENVIO (FORMAP_ANO_FORM, FORMAP_NUM_FORM)
+  tablespace TS_RPV_2
+  pctfree 40
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 24K
     minextents 1
     maxextents unlimited
   );
@@ -5411,6 +5569,17 @@ comment on column RPV.FORM_EST.alt_dat
   is 'Data deAlteração do Registo.';
 comment on column RPV.FORM_EST.alt_uti
   is 'Utilizador que realizou a Última Alteração';
+create index RPV.FOREST_DAT_REALIZ_I on RPV.FORM_EST (DAT_REALIZ)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
 create index RPV.FOREST_ESTTAREF_FK_I on RPV.FORM_EST (COD_EST, TIP_VIS, FORM_REG, COD_TAREF)
   tablespace TS_RPV_2
   pctfree 40
@@ -6746,7 +6915,62 @@ comment on column RPV.FORMULARIO_WEB.telef_ref_3
   is 'telefone de referencia de empresa';
 comment on column RPV.FORMULARIO_WEB.email_3
   is 'email de referencia de empresa';
+create index RPV.FOR_WEB_APEL on RPV.FORMULARIO_WEB (APEL)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
 create index RPV.FOR_WEB_BARCODE on RPV.FORMULARIO_WEB (NUM_FORM_OUT)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_WEB_DOC_VIAG on RPV.FORMULARIO_WEB (NUM_DOC_VIAG)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_WEB_FOR on RPV.FORMULARIO_WEB (ANO_FORM, NUM_FORM)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_WEB_REPORT on RPV.FORMULARIO_WEB (DATA_AGENDAMENTO)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.FOR_WEB_SEARCH_NOME on RPV.FORMULARIO_WEB (NOME, APEL)
   tablespace TS_RPV_2
   pctfree 10
   initrans 2
@@ -6827,6 +7051,128 @@ alter table RPV.FORMULARIO_WEB
   add check (aut_regre IN ( 'S' , 'N' ));
 alter table RPV.FORMULARIO_WEB
   add check (viag_conj IN ( 'S' , 'N' ));
+
+prompt
+prompt Creating table FORMULARIO_WEB_DEL_BCK
+prompt =====================================
+prompt
+create table RPV.FORMULARIO_WEB_DEL_BCK
+(
+  num_form_web           VARCHAR2(11) not null,
+  dur_esta               NUMBER(3),
+  apel                   VARCHAR2(50) not null,
+  apel_nasc              VARCHAR2(50),
+  nome                   VARCHAR2(25) not null,
+  sexo                   VARCHAR2(1),
+  dat_nasc               VARCHAR2(10) not null,
+  loc_nasc               VARCHAR2(35),
+  apel_conj              VARCHAR2(50),
+  nome_conj              VARCHAR2(25),
+  dat_nasc_conj          VARCHAR2(10),
+  nat_conj               VARCHAR2(35),
+  filia                  VARCHAR2(50),
+  num_doc_viag           VARCHAR2(20) not null,
+  dest_prin              VARCHAR2(70),
+  fron_1_ent             VARCHAR2(50),
+  nome_refer_1           VARCHAR2(50),
+  num_ent                VARCHAR2(1),
+  dat_ent                VARCHAR2(10),
+  dat_sai                VARCHAR2(10),
+  dat_ped                VARCHAR2(10),
+  dat_ped_sch            VARCHAR2(10),
+  cod_pos                NUMBER(4),
+  cod_prof               VARCHAR2(2),
+  cod_doc                VARCHAR2(3),
+  cod_esta_1             VARCHAR2(2),
+  cod_esta_2             VARCHAR2(2),
+  cod_esta_3             VARCHAR2(2),
+  tip_vis_ped            VARCHAR2(2) not null,
+  cod_pais_nac_orig      VARCHAR2(3),
+  cod_pais_nac_1         VARCHAR2(3) not null,
+  cod_pais_nac_2         VARCHAR2(3),
+  cod_pais_nac_3         VARCHAR2(3),
+  cod_pais_emi_doc       VARCHAR2(3),
+  cod_pais_sch_ref       VARCHAR2(3),
+  cod_pais_sch_dest_prin VARCHAR2(3),
+  cod_pais_sch_repres    VARCHAR2(3),
+  cri_dat                VARCHAR2(20) not null,
+  apel_conj_sol          VARCHAR2(50),
+  apel_ue                VARCHAR2(50),
+  nome_ue                VARCHAR2(25),
+  dat_nasc_ue            VARCHAR2(10),
+  cod_pais_nac_ue        VARCHAR2(3),
+  passaporte_ue          VARCHAR2(20),
+  parentesco_ue          VARCHAR2(20),
+  tratado                VARCHAR2(1) not null,
+  email_req              VARCHAR2(50),
+  num_ident              VARCHAR2(20),
+  cod_pais_nac           VARCHAR2(3),
+  est_civ                NUMBER(1),
+  dat_emi_doc            VARCHAR2(10),
+  vali_doc_viag          DATE,
+  aut_regre              VARCHAR2(1),
+  tit_resid_num          VARCHAR2(20),
+  tit_resid_vali         VARCHAR2(10),
+  vis_regre_num          VARCHAR2(20),
+  vis_regre_vali         DATE,
+  ent_patr               VARCHAR2(50),
+  ender_prof             VARCHAR2(50),
+  dat_loc_ped            VARCHAR2(70),
+  aut_pais_dest          VARCHAR2(3),
+  vali_aut               DATE,
+  cod_pais_emi_aut       VARCHAR2(3),
+  dat_sch_1              DATE,
+  dat_sch_2              DATE,
+  dat_sch_3              DATE,
+  meio_trans             VARCHAR2(50),
+  ender_estad            VARCHAR2(70),
+  telef_ref              NUMBER(15),
+  email_ref              VARCHAR2(50),
+  cod_conc               NUMBER(4),
+  subs                   VARCHAR2(120),
+  viag_conj              VARCHAR2(1),
+  num_filho              NUMBER(2),
+  financia               VARCHAR2(120),
+  ender_act              VARCHAR2(50),
+  telefone               NUMBER(15),
+  ano_form               NUMBER(4),
+  num_form               NUMBER(7),
+  data_agendamento       DATE,
+  periodo                NUMBER(2),
+  apel_tut               VARCHAR2(50),
+  nome_tut               VARCHAR2(25),
+  cod_pais_nac_tut       VARCHAR2(3),
+  endereco_tut           VARCHAR2(50),
+  bio                    VARCHAR2(1),
+  dat_bio                VARCHAR2(10),
+  visto_3_anos           VARCHAR2(1),
+  nome_refer_3           VARCHAR2(50),
+  ender_estad_3          VARCHAR2(70),
+  telef_ref_3            VARCHAR2(15),
+  email_3                VARCHAR2(50),
+  dest_prin_2            VARCHAR2(70),
+  dest_prin_3            VARCHAR2(70),
+  cod_conc_3             NUMBER(4),
+  obs                    VARCHAR2(500),
+  cri_uti                VARCHAR2(20),
+  num_form_out           NUMBER(12),
+  email_tut              VARCHAR2(50),
+  telefone_tut           NUMBER(15),
+  info_mot_esta          VARCHAR2(120),
+  ult_num_vin            VARCHAR2(12),
+  date_del               DATE
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating table TIPO_GRUPOS
@@ -7235,6 +7581,28 @@ alter table RPV.INDEF_JUSTIFICA_PARECER
   check (ORIGEM IN ('P','C'));
 
 prompt
+prompt Creating table JAVA$OPTIONS
+prompt ===========================
+prompt
+create table RPV.JAVA$OPTIONS
+(
+  what  VARCHAR2(128),
+  opt   VARCHAR2(20),
+  value VARCHAR2(128)
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
 prompt Creating table JUSTIFICA_RECUSA
 prompt ===============================
 prompt
@@ -7299,6 +7667,74 @@ alter table RPV.JUSTIFICA_RECUSA
   storage
   (
     initial 72K
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table LIMPA_AGENDA
+prompt ===========================
+prompt
+create table RPV.LIMPA_AGENDA
+(
+  num_form_web NUMBER(10) not null,
+  tipo         VARCHAR2(1) not null,
+  tratado      VARCHAR2(1) not null,
+  cri_uti      VARCHAR2(6) not null,
+  cri_dat      VARCHAR2(20) not null
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+alter table RPV.LIMPA_AGENDA
+  add constraint LIMPA_AGENDA_PK primary key (NUM_FORM_WEB)
+  using index 
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 3M
+    minextents 1
+    maxextents unlimited
+  );
+alter table RPV.LIMPA_AGENDA
+  add constraint LIMPA_AGENDA_TIPO
+  check (TIPO IN ('A','P'));
+alter table RPV.LIMPA_AGENDA
+  add constraint LIMPA_AGENDA_TRATADO
+  check (TRATADO IN ('S','N'));
+
+prompt
+prompt Creating table LIMPA_AGENDA_DEL_BCK
+prompt ===================================
+prompt
+create table RPV.LIMPA_AGENDA_DEL_BCK
+(
+  num_form_web NUMBER(10) not null,
+  tipo         VARCHAR2(1) not null,
+  tratado      VARCHAR2(1) not null,
+  cri_uti      VARCHAR2(6) not null,
+  cri_dat      VARCHAR2(20) not null,
+  date_del     DATE
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
     minextents 1
     maxextents unlimited
   );
@@ -7718,7 +8154,7 @@ tablespace TS_RPV_1
   maxtrans 255
   storage
   (
-    initial 1032K
+    initial 1M
     minextents 1
     maxextents unlimited
   );
@@ -7731,7 +8167,7 @@ alter table RPV.NOTAS_POSTO
   maxtrans 255
   storage
   (
-    initial 1032K
+    initial 1M
     minextents 1
     maxextents unlimited
   );
@@ -8242,6 +8678,123 @@ alter table RPV.PARAM_DET
 alter table RPV.PARAM_DET
   add constraint PARAMDET_PARAM_FK foreign key (IND_PARA)
   references RPV.PARAM_GLO (IND_PARA);
+
+prompt
+prompt Creating table PED_EMITIR_VISTOS
+prompt ================================
+prompt
+create table RPV.PED_EMITIR_VISTOS
+(
+  ref_form_2     VARCHAR2(14) not null,
+  cri_dat        VARCHAR2(20) not null,
+  cri_uti        VARCHAR2(30) not null,
+  obs            VARCHAR2(250),
+  f_proc         VARCHAR2(1),
+  f_est_msg1     VARCHAR2(1),
+  f_est_msg2     VARCHAR2(1),
+  f_est_msg3     VARCHAR2(1),
+  f_est_msg4     VARCHAR2(1),
+  f_est_msg5     VARCHAR2(1),
+  num_tentativas NUMBER(1)
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+comment on table RPV.PED_EMITIR_VISTOS
+  is 'Pedidos especiais para Emitir Vistos';
+comment on column RPV.PED_EMITIR_VISTOS.ref_form_2
+  is 'Número do pedido de visto';
+comment on column RPV.PED_EMITIR_VISTOS.cri_dat
+  is 'Data de Criação do Registo';
+comment on column RPV.PED_EMITIR_VISTOS.cri_uti
+  is 'Utilizador que realizou a Criação do Registo';
+comment on column RPV.PED_EMITIR_VISTOS.obs
+  is 'Observações';
+comment on column RPV.PED_EMITIR_VISTOS.f_proc
+  is 'Indicativo se foi processado (S-sim/N-não/E-erro)';
+comment on column RPV.PED_EMITIR_VISTOS.f_est_msg1
+  is 'Indicativo do estado da mensagem (0-enviada;1-com resposta ok;2-sem resposta)';
+comment on column RPV.PED_EMITIR_VISTOS.f_est_msg2
+  is 'Indicativo do estado da mensagem (0-enviada;1-com resposta ok;2-sem resposta)';
+comment on column RPV.PED_EMITIR_VISTOS.f_est_msg3
+  is 'Indicativo do estado da mensagem (0-enviada;1-com resposta ok;2-sem resposta;3-nao aplicavel)';
+comment on column RPV.PED_EMITIR_VISTOS.num_tentativas
+  is 'Numero de Retrieves de obtenção de reposta de cada mensagem. Contador é limpo a cada mensagem.';
+alter table RPV.PED_EMITIR_VISTOS
+  add constraint PED_EMITIR_VISTOS_PK primary key (REF_FORM_2)
+  using index 
+  tablespace TS_RPV_1
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table PLAN_TABLE
+prompt =========================
+prompt
+create table RPV.PLAN_TABLE
+(
+  statement_id      VARCHAR2(30),
+  plan_id           NUMBER,
+  timestamp         DATE,
+  remarks           VARCHAR2(4000),
+  operation         VARCHAR2(30),
+  options           VARCHAR2(255),
+  object_node       VARCHAR2(128),
+  object_owner      VARCHAR2(30),
+  object_name       VARCHAR2(30),
+  object_alias      VARCHAR2(65),
+  object_instance   INTEGER,
+  object_type       VARCHAR2(30),
+  optimizer         VARCHAR2(255),
+  search_columns    NUMBER,
+  id                INTEGER,
+  parent_id         INTEGER,
+  depth             INTEGER,
+  position          INTEGER,
+  cost              INTEGER,
+  cardinality       INTEGER,
+  bytes             INTEGER,
+  other_tag         VARCHAR2(255),
+  partition_start   VARCHAR2(255),
+  partition_stop    VARCHAR2(255),
+  partition_id      INTEGER,
+  other             LONG,
+  distribution      VARCHAR2(30),
+  cpu_cost          INTEGER,
+  io_cost           INTEGER,
+  temp_space        INTEGER,
+  access_predicates VARCHAR2(4000),
+  filter_predicates VARCHAR2(4000),
+  projection        VARCHAR2(4000),
+  time              INTEGER,
+  qblock_name       VARCHAR2(30)
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating table POSTO_PAIS_REPR
@@ -9366,6 +9919,17 @@ comment on column RPV.RECEP.posred_num_form
   is 'Numero do Pedido';
 comment on column RPV.RECEP.posred_ord_pos_redir
   is 'Sequência de Redirecionamento p/ Formulário';
+create index RPV.RECEBE_ASSUNTO on RPV.RECEP (ASSUNTO)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
 create index RPV.RECEB_FOR_FK_I on RPV.RECEP (FOR_ANO_FORM, FOR_NUM_FORM)
   tablespace TS_RPV_2
   pctfree 40
@@ -9473,6 +10037,28 @@ create index RPV.RECEB_VIN_FK_I on RPV.RECEP (VIN_NUM_VIN)
   storage
   (
     initial 16K
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.RECEP_RECEP_I on RPV.RECEP (EST_RECEP, TIP_FORM_RECEP)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.RECEP_RECEP2_I on RPV.RECEP (EST_RECEP, TIP_ORIG)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
     minextents 1
     maxextents unlimited
   );
@@ -9594,6 +10180,17 @@ create index RPV.ENVIA_RECEBE_FK_I on RPV.TEMP_ENV (RECEBE_NUM_FICH)
   storage
   (
     initial 16K
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.TEMP_ENV_ENV_I on RPV.TEMP_ENV (ENVIOU)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
     minextents 1
     maxextents unlimited
   );
@@ -9866,6 +10463,41 @@ create unique index RPV.TEMP_ENV_VISMAIL_PK on RPV.TEMP_ENV_VISMAIL (MESSAGEID)
   );
 
 prompt
+prompt Creating table TEMP_FOTO_KIOSK
+prompt ==============================
+prompt
+create table RPV.TEMP_FOTO_KIOSK
+(
+  id        NUMBER(5) not null,
+  foto_name VARCHAR2(50),
+  foto      BLOB
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+alter table RPV.TEMP_FOTO_KIOSK
+  add constraint TEMP_FOTO_KIOSK_PK primary key (ID)
+  using index 
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
 prompt Creating table TEMP_IMAGENS
 prompt ===========================
 prompt
@@ -9887,6 +10519,17 @@ tablespace TS_RPV_1
   storage
   (
     initial 20M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.TEMP_IMAGENS_DOC_VIAGEM_I on RPV.TEMP_IMAGENS (NUM_DOC_VIAGEM)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
     minextents 1
     maxextents unlimited
   );
@@ -9928,6 +10571,17 @@ tablespace TS_RPV_1
   storage
   (
     initial 30M
+    minextents 1
+    maxextents unlimited
+  );
+create index RPV.TEMP_IMAGENS_DET_FOR_I on RPV.TEMP_IMAGENS_DET (REF_FORM_2)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
     minextents 1
     maxextents unlimited
   );
@@ -10355,6 +11009,46 @@ create index RPV.REPS_ENVIA_FK_I on RPV.TEMP_REPS (ENVIA_MSGID)
 alter table RPV.TEMP_REPS
   add constraint REPS_ENVIA_FK foreign key (ENVIA_MSGID)
   references RPV.TEMP_ENV (MSGID);
+
+prompt
+prompt Creating table TESTE
+prompt ====================
+prompt
+create table RPV.TESTE
+(
+  nome VARCHAR2(100)
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table TESTE_DIR
+prompt ========================
+prompt
+create table RPV.TESTE_DIR
+(
+  nome VARCHAR2(100)
+)
+tablespace TS_RPV_1
+  pctfree 10
+  pctused 40
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating table TIPO_ANEXOS
@@ -10801,7 +11495,7 @@ alter table RPV.VIN_TRANSMITIR
   maxtrans 255
   storage
   (
-    initial 64K
+    initial 16K
     minextents 1
     maxextents unlimited
   );
@@ -10938,6 +11632,17 @@ comment on column RPV.VISTOS_3_ANOS.dat_vali_visto_fim
   is 'data fim da validade do visto 3 anos';
 comment on column RPV.VISTOS_3_ANOS.num_visto
   is 'numero do visto';
+create index RPV.VISTOS_3_ANOS_FOR_I on RPV.VISTOS_3_ANOS (ANO_FORM, NUM_FORM)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating table VISTOS_3_ANOS_WEB
@@ -10969,6 +11674,17 @@ comment on column RPV.VISTOS_3_ANOS_WEB.dat_vali_visto_fim
   is 'data fim da validade do visto 3 anos';
 comment on column RPV.VISTOS_3_ANOS_WEB.num_visto
   is 'numero do visto';
+create index RPV.VISTOS_3_ANOS_WEB_I on RPV.VISTOS_3_ANOS_WEB (NUM_FORM_WEB)
+  tablespace TS_RPV_2
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 5M
+    minextents 1
+    maxextents unlimited
+  );
 
 prompt
 prompt Creating sequence AGENDAMENTOS_SEQ
@@ -10988,7 +11704,7 @@ prompt
 create sequence RPV.ENVIO_SEQ_ENVIO
 minvalue 1
 maxvalue 99999999999999999999
-start with 484704
+start with 991578
 increment by 1
 cache 20
 cycle;
@@ -11012,7 +11728,7 @@ prompt
 create sequence RPV.SEQ_AGEND_TEL
 minvalue 1
 maxvalue 9999999999999
-start with 1451
+start with 980
 increment by 1
 cache 20;
 
@@ -11023,7 +11739,7 @@ prompt
 create sequence RPV.SEQ_ANEXOS
 minvalue 1
 maxvalue 9999999999999
-start with 7639
+start with 13836
 increment by 1
 cache 20
 cycle;
@@ -11058,7 +11774,7 @@ prompt
 create sequence RPV.SEQ_FORM_EST
 minvalue 1
 maxvalue 99999999999999999999
-start with 1811206
+start with 3433053
 increment by 1
 cache 20
 cycle;
@@ -11070,7 +11786,7 @@ prompt
 create sequence RPV.SEQ_FORMULARIO
 minvalue 780
 maxvalue 9999999
-start with 256049
+start with 471826
 increment by 1
 cache 20
 cycle;
@@ -11082,7 +11798,18 @@ prompt
 create sequence RPV.SEQ_FOTOS
 minvalue 1
 maxvalue 99999999999999999999
-start with 426372
+start with 619992
+increment by 1
+cache 20;
+
+prompt
+prompt Creating sequence SEQ_FOTOS_KIOSK
+prompt =================================
+prompt
+create sequence RPV.SEQ_FOTOS_KIOSK
+minvalue 1
+maxvalue 99999999999999999999
+start with 237
 increment by 1
 cache 20;
 
@@ -11093,7 +11820,7 @@ prompt
 create sequence RPV.SEQ_GRUPOS
 minvalue 1
 maxvalue 999999999
-start with 1124
+start with 24156
 increment by 1
 cache 20
 order;
@@ -11164,7 +11891,7 @@ prompt
 create sequence RPV.SEQ_VISMAIL
 minvalue 0
 maxvalue 999999999
-start with 235
+start with 1301
 increment by 1
 cache 20
 order;
@@ -11176,7 +11903,7 @@ prompt
 create sequence RPV.SEQ_VIS_MESSAGEID
 minvalue 0
 maxvalue 999999999
-start with 24984
+start with 158335
 increment by 1
 cache 20
 order;
@@ -11200,7 +11927,7 @@ prompt
 create sequence RPV.TEMP_ENV_MSGID
 minvalue 1
 maxvalue 9999999999
-start with 473216
+start with 941096
 increment by 1
 cache 20
 cycle;
@@ -11212,7 +11939,7 @@ prompt
 create sequence RPV.TEMP_NUM_FICH
 minvalue 1
 maxvalue 99999999999999999999
-start with 493660
+start with 829837
 increment by 1
 cache 20
 cycle;
@@ -11294,6 +12021,100 @@ Exception
     inStream.close();
     outStream.close();
   }
+};
+/
+
+prompt
+prompt Creating java source Host
+prompt =========================
+prompt
+create or replace and compile java source named RPV."Host" as
+import java.io.*;
+public class Host {
+  public static void executeCommand(String command) {
+    try {
+      String[] finalCommand;
+      if (isWindows()) {
+        finalCommand = new String[4];
+        // Use the appropriate path for your windows version.
+        //finalCommand[0] = "C:\\winnt\\system32\\cmd.exe";    // Windows NT/2000
+        finalCommand[0] = "C:\\windows\\system32\\cmd.exe";    // Windows XP/2003
+        //finalCommand[0] = "C:\\windows\\syswow64\\cmd.exe";  // Windows 64-bit
+        finalCommand[1] = "/y";
+        finalCommand[2] = "/c";
+        finalCommand[3] = command;
+      }
+      else {
+        finalCommand = new String[3];
+        finalCommand[0] = "/bin/sh";
+        finalCommand[1] = "-c";
+        finalCommand[2] = command;
+      }
+      System.out.println("Inic...");
+      final Process pr = Runtime.getRuntime().exec(finalCommand);
+      pr.waitFor();
+
+      new Thread(new Runnable(){
+        public void run() {
+          BufferedReader br_in = null;
+          try {
+            br_in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            String buff = null;
+            while ((buff = br_in.readLine()) != null) {
+              System.out.println("Process out :" + buff);
+              try {Thread.sleep(100); } catch(Exception e) {}
+            }
+            br_in.close();
+          }
+          catch (IOException ioe) {
+            System.out.println("Exception caught printing process output.");
+            ioe.printStackTrace();
+          }
+          finally {
+            try {
+              br_in.close();
+            } catch (Exception ex) {}
+          }
+        }
+      }).start();
+  
+      new Thread(new Runnable(){
+        public void run() {
+          BufferedReader br_err = null;
+          try {
+            br_err = new BufferedReader(new InputStreamReader(pr.getErrorStream()));
+            String buff = null;
+            while ((buff = br_err.readLine()) != null) {
+              System.out.println("Process err :" + buff);
+              try {Thread.sleep(100); } catch(Exception e) {}
+            }
+            br_err.close();
+          }
+          catch (IOException ioe) {
+            System.out.println("Exception caught printing process error.");
+            ioe.printStackTrace();
+          }
+          finally {
+            try {
+              br_err.close();
+            } catch (Exception ex) {}
+          }
+        }
+      }).start();
+    System.out.println("Fim...");  
+    }
+    catch (Exception ex) {
+      System.out.println(ex.getLocalizedMessage());
+    }
+  }
+  
+  public static boolean isWindows() {
+    if (System.getProperty("os.name").toLowerCase().indexOf("windows") != -1)
+      return true;
+    else
+      return false;
+  }
+
 };
 /
 
@@ -11581,7 +12402,7 @@ PROCEDURE UPDATE_FTP( pfile in Char );
 /*------------------------------------------------------------------------*/
 PROCEDURE Read_FOTO_Migra (p_FileInput Char);
 /*------------------------------------------------------------------------*/
-Procedure READ_FOTO_NEW;
+PROCEDURE READ_FOTO_NEW;
 /*------------------------------------------------------------------------*/
 END FOTOS_PK;
 /
@@ -12435,6 +13256,58 @@ end;
 /
 
 prompt
+prompt Creating package VISXML3
+prompt ========================
+prompt
+CREATE OR REPLACE PACKAGE RPV.VISXML3
+IS
+   PROCEDURE PApplicationCreateApplication (
+      pANO_FORM      IN     FORMULARIO.ANO_FORM%TYPE,
+      pNUM_FORM      IN     FORMULARIO.NUM_FORM%TYPE,
+      msg_resp_vis      OUT VARCHAR2,
+      link_app       IN     VARCHAR2,
+      vRole          IN     VARCHAR2,
+      TestId         IN     VARCHAR2,
+      tudo           IN     VARCHAR2 DEFAULT 'S',
+      ambiente       IN     VARCHAR2 DEFAULT 'P');
+
+   PROCEDURE write_clob_tofile (vCcaminhoXML   IN VARCHAR2,
+                                vfilename      IN VARCHAR2,
+                                v_clob         IN CLOB);
+
+   PROCEDURE PAttAppDatAddBiom (pANO_FORM       IN     FORMULARIO.ANO_FORM%TYPE,
+                                pNUM_FORM       IN     FORMULARIO.NUM_FORM%TYPE,
+                                estado_tarefa      OUT NUMBER,
+                                tipo            IN     VARCHAR2,
+                                msg_resp_vis       OUT VARCHAR2,
+                                vRole           IN     VARCHAR2,
+                                TestId          IN     VARCHAR2);
+
+   PROCEDURE PDecCreateAppDec (V_Num_App   IN VARCHAR2,
+                               V_Dec_Aut   IN VARCHAR2,
+                               v_Tipo      IN VARCHAR2,
+                               v_Valor     IN VARCHAR2,
+                               vRole       IN VARCHAR2,
+                               TestId      IN VARCHAR2,
+                               ambiente    IN VARCHAR2 DEFAULT 'P');
+
+
+   PROCEDURE PDecCreateVisCreatDec (
+      pANO_FORM         IN FORMULARIO.ANO_FORM%TYPE,
+      pNUM_FORM         IN FORMULARIO.NUM_FORM%TYPE,
+      pSticker_ID       IN VARCHAR2,
+      pSticker_ID_Old   IN VARCHAR2,
+      v_tipo            IN VARCHAR2,
+      vRole             IN VARCHAR2,
+      TestId            IN VARCHAR2,
+      ambiente          IN VARCHAR2 DEFAULT 'P',
+      pSticker_FilledManually IN VARCHAR2 DEFAULT 'false');
+
+   PROCEDURE P_EXE_PED_VIS;
+END;
+/
+
+prompt
 prompt Creating package WEBSERVICE_VIS
 prompt ===============================
 prompt
@@ -12969,6 +13842,33 @@ END;
 /
 
 prompt
+prompt Creating function PING_HC
+prompt =========================
+prompt
+CREATE OR REPLACE FUNCTION RPV.ping_hc (pHostName VARCHAR2, pPort NUMBER DEFAULT 1000) RETURN VARCHAR2
+ AUTHID DEFINER IS
+    tcpCnx utl_tcp.connection;
+    cOk    CONSTANT VARCHAR2(2) := 'OK';
+    cFail  CONSTANT VARCHAR2(5) := 'ERROR';
+   BEGIN
+     tcpCnx := utl_tcp.open_connection (pHostName, pPort);
+     utl_tcp.close_connection(tcpCnx);
+     RETURN cOk;
+   EXCEPTION
+     WHEN utl_tcp.network_error THEN
+       IF (UPPER(SQLERRM) LIKE '%HOST%') THEN
+         RETURN cFail;
+       ELSIF (UPPER(SQLERRM) LIKE '%LISTENER%') THEN
+         RETURN cOk;
+       ELSE
+         RAISE;
+       END IF;
+     WHEN OTHERS THEN
+       RAISE;
+   END ping_hc;
+/
+
+prompt
 prompt Creating function REGEXP_LIKE
 prompt =============================
 prompt
@@ -13013,7 +13913,7 @@ where f.cod_pare_pos is null and
 to_date(f.dat_ped,'yyyy/mm/dd') >= trunc(p.data_arranque_vis) and
 f.cod_pos = p.cod_pos and f.foto_associada = 'S'
 and nvl(f.consulta_vis,'N') = 'N' and nvl(f.consulta_nsis,'N') = 'N';
---and ano_form = 2017;
+
 --temporário em produção retirar ultima condição
 --and to_date(f.dat_ped,'yyyy/mm/dd') = trunc(sysdate);
 
@@ -13027,7 +13927,7 @@ v_dat_nasc         formulario.dat_nasc%type;
 v_num_doc_viag     formulario.num_doc_viag%type;
 v_tip_vis_ped      formulario.tip_vis_ped%type;
 msg_resp           clob;
-estado_Tarefa		   number := 0;
+estado_Tarefa           number := 0;
 cnsisii            number(2);
 begin
 update formulario
@@ -13041,6 +13941,17 @@ commit;
 update formulario
 set consulta_nsis = 'N'
 where consulta_nsis = 'OK' and nvl(consulta_vis,'N') = 'N';
+commit;
+delete from link_vis_manual where num_form in (select f.num_form
+from formulario f, posto p
+where f.cod_pare_pos is null and
+to_date(f.dat_ped,'yyyy/mm/dd') >= trunc(p.data_arranque_vis) and
+f.cod_pos = p.cod_pos and f.foto_associada = 'S'
+and nvl(f.consulta_vis,'N') = 'N' and nvl(f.consulta_nsis,'N') = 'N');
+commit;
+update formulario
+set consulta_vis = 'N'
+where consulta_vis is not null and consulta_nsis = 'N' and cod_pare_pos is null;
 commit;
 open c1;
 loop
@@ -13125,12 +14036,12 @@ v_tip_vis_ped      formulario.tip_vis_ped%type;
 msg_resp           clob;
 estado_Tarefa		   number := 0;
 begin
+update formulario
+set consulta_nsis = null
+where consulta_nsis is not null and consulta_vis is null;
+commit;
 open c1;
 loop
-     update formulario
-     set consulta_nsis = null
-     where consulta_nsis is not null and consulta_vis is null;
-     commit;
      fetch c1 into v_ref_form_2, v_ano_form, v_num_form,
      v_nome, v_apel, v_dat_nasc, v_num_doc_viag, v_tip_vis_ped;
      exit when c1%notfound;
@@ -13405,6 +14316,89 @@ create or replace procedure rpv.ENVIA_NOTIFICACOES is
 /
 
 prompt
+prompt Creating procedure FORMULARIO_WEB_DEL
+prompt =====================================
+prompt
+CREATE OR REPLACE PROCEDURE RPV.formulario_web_del
+IS
+cursor c1 is
+select nome, apel, dat_nasc, count(*)
+from formulario_web where num_form is null and trunc(data_agendamento) > trunc(sysdate)
+group by nome, apel, dat_nasc
+having count(*) > 1;
+
+v_nome formulario_web.nome%type;
+v_apel formulario_web.apel%type;
+v_dat_nasc formulario_web.dat_nasc%type;
+v_conta number(5);
+v_num_form_web formulario_web.num_form_web%type;
+
+begin
+OPEN C1;
+loop
+    fetch c1 into v_nome, v_apel, v_dat_nasc, v_conta;
+    exit when c1%notfound;
+
+    select max(substr(num_form_web,2)) into v_num_form_web
+    from formulario_Web
+    where nome = v_nome and apel = v_apel and dat_nasc = v_dat_nasc;
+
+    insert into formulario_web_del_bck
+    select fw.*, sysdate /*HC New acrecentei coluna para audit*/
+    from formulario_web fw
+    where nome = v_nome and apel = v_apel and dat_nasc = v_dat_nasc and
+    num_form_web <> 'W' || v_num_form_web and num_form is null;
+    --and trunc(data_agendamento) > trunc(sysdate);
+
+    begin--HC New
+    delete from formulario_web
+    where nome = v_nome and apel = v_apel and dat_nasc = v_dat_nasc and
+    num_form_web <> 'W' || v_num_form_web and num_form is null;
+    --and trunc(data_agendamento) > trunc(sysdate);
+    --HC New inic
+    exception
+    when dup_val_on_index then
+
+     for item in(select la.*,rowid rid from LIMPA_AGENDA la where  la.NUM_FORM_WEB in(select TO_NUMBER(SUBSTR(fw.NUM_FORM_WEB,2))
+                                    from formulario_web fw
+                                    where nome = v_nome and apel = v_apel and dat_nasc = v_dat_nasc and
+                                    num_form_web <> 'W' || v_num_form_web and num_form is null)
+      and tratado='S')loop
+
+       insert into LIMPA_AGENDA_del_bck(NUM_FORM_WEB, TIPO, TRATADO, CRI_UTI, CRI_DAT, DATE_DEL)
+       values(item.NUM_FORM_WEB, item.TIPO, item.TRATADO, item.CRI_UTI, item.CRI_DAT, sysdate);
+
+       delete from LIMPA_AGENDA la where  la.rowid=item.rid;
+
+     end loop;
+
+     delete from formulario_web
+      where nome = v_nome and apel = v_apel and dat_nasc = v_dat_nasc and
+      num_form_web <> 'W' || v_num_form_web and num_form is null;
+     --dbms_output.put_line('ERRO nome="'||v_nome||'" and apel="'||v_apel||'" and dat_nasc="'||v_dat_nasc||' and num_form_web<>"W'||v_num_form_web);
+     --raise;
+    end;
+    --HC New fim
+    commit;
+end loop;
+close c1;
+commit;
+end;
+/
+
+prompt
+prompt Creating procedure GERA_ARCHIVES
+prompt ================================
+prompt
+create or replace procedure rpv.Gera_Archives is
+var       varchar2(50);
+begin
+var := 'ALTER SYSTEM SWITCH LOGFILE';
+execute immediate var;
+end Gera_Archives;
+/
+
+prompt
 prompt Creating procedure SHELL
 prompt ========================
 prompt
@@ -13606,6 +14600,190 @@ end loop;
 close c1;
 --Tratar Grupos
 delete from grupos where id_grupo not in (select id_grupo from grupos_det);
+commit;
+end;
+/
+
+prompt
+prompt Creating procedure HOST_COMMAND
+prompt ===============================
+prompt
+CREATE OR REPLACE PROCEDURE RPV.host_command (p_command  IN  VARCHAR2)
+AS LANGUAGE JAVA 
+NAME 'Host.executeCommand (java.lang.String)';
+/
+
+prompt
+prompt Creating procedure INTEGRA_FOTO_BIO
+prompt ===================================
+prompt
+create or replace procedure rpv.integra_foto_bio is
+cursor c1 is
+select distinct f.ref_form_2, f.ano_form, f.num_form, f.num_doc_viag
+from formulario f
+where f.foto_associada = 'N' and f.cod_pare_pos is null;
+
+cursor c2 (ano_form1 number, num_form1 number) is
+select a.fich, a.nome_fich, a.anexo_id
+from anexos a
+where a.ano_form = ano_form1 and a.num_form = num_form1
+and a.anexo_id in (2,5)
+order by a.anexo_id;
+
+v_ref_form_2   formulario.ref_form_2%type;
+v_ano_form     formulario.ano_form%type;
+v_num_form     formulario.num_form%type;
+v_num_doc_viag formulario.num_doc_viag%type;
+v_fich         anexos.fich%type;
+v_nome_fich    anexos.nome_fich%type;
+v_anexo_id     anexos.anexo_id%type;
+v_ordem        temp_imagens.num_ordem%type;
+v_seq_insercao temp_imagens_det.seq_interna%type;
+p_bio          varchar2(100);
+p_foto         varchar2(100);
+v_x            varchar2(1);
+controla       number(1);
+begin
+open c1;
+loop
+     fetch c1 into v_ref_form_2, v_ano_form, v_num_form, v_num_doc_viag;
+     exit when c1%notfound;
+     open c2(v_ano_form, v_num_form);
+     loop
+          fetch c2 into v_fich, v_nome_fich, v_anexo_id;
+          exit when c2%notfound;
+
+          if v_anexo_id = 2 then
+             select seq_fotos.nextval into v_ordem from dual;
+
+             begin
+             select distinct 's' into v_x
+             from temp_imagens
+             where num_doc_viagem = v_num_doc_viag;
+             exception when no_data_found then
+                    v_x := 'n';
+             end;
+             if v_x = 'n' then
+                p_foto := v_num_doc_viag || '.jpg';
+                p_bio := 'bio' || v_num_doc_viag || '.nist';
+             else
+               p_foto := v_num_doc_viag || '_' || v_ordem || '.jpg';
+               p_bio := 'bio' || v_num_doc_viag || '_' || v_ordem || '.nist';
+             end if;
+             funcoes.ExportBlob('d:\fotos\tratadas\' || p_foto,v_fich);
+             controla := 1;
+          elsif v_anexo_id = 5 then
+             p_bio := 'bio' || v_num_doc_viag || '.nist';
+             funcoes.ExportBlob('d:\fotos\tratadas\' || p_bio,v_fich);
+
+             insert into temp_imagens (num_ordem,num_doc_viagem,usado,foto,cri_dat,cri_uti,biometria)
+             values(v_ordem,v_num_doc_viag,'S',bfilename('FOTOGRAFIAS',p_foto),to_char(sysdate,'yyyy/mm/dd hh24:mi:ss'),user,bfilename('FOTOGRAFIAS',p_bio));
+             controla := 2;
+          end if;
+     end loop;
+     close c2;
+     if controla = 1 then
+        insert into temp_imagens (num_ordem,num_doc_viagem,usado,foto,cri_dat,cri_uti,biometria)
+        values(v_ordem,v_num_doc_viag,'S',bfilename('FOTOGRAFIAS',p_foto),to_char(sysdate,'yyyy/mm/dd hh24:mi:ss'),user,null);
+     end if;
+     select nvl(max(seq_interna),0) + 1 into v_seq_insercao
+     from temp_imagens_det
+     where num_ordem = v_ordem;
+
+     insert into temp_imagens_det(num_ordem,seq_interna,ano_form,num_form,ref_form_2,cri_dat,cri_uti)
+     values(v_ordem,v_seq_insercao,v_ano_form,v_num_form,v_ref_form_2,to_char(sysdate,'yyyy/mm/dd hh24:mi:ss'),user);
+
+     update formulario
+     set foto_associada = 'S'
+     where ano_form = v_ano_form and num_form = v_num_form;
+
+     controla := 0;
+     commit;
+end loop;
+close c1;
+commit;
+end;
+/
+
+prompt
+prompt Creating procedure LIMPA_SHARED
+prompt ===============================
+prompt
+CREATE OR REPLACE PROCEDURE RPV.limpa_shared IS
+begin
+execute immediate 'alter system flush shared_pool';
+end;
+/
+
+prompt
+prompt Creating procedure LISTAS_VERDES
+prompt ================================
+prompt
+create or replace procedure rpv.Listas_Verdes is
+
+cursor c1 is
+select ref_form_2, nome, apel, dat_nasc, num_doc_viag
+from formulario
+where consulta_vis = 'V' and cod_pare_pos is null
+and nvl(enviou_alerta_verde,'N') in ('N','A')
+order by ref_form_2;
+
+CURSOR c_mail (ind number) is
+select val_param from param_det
+where ind_para = ind;
+
+v_ref_form_2       formulario.ref_form_2%type;
+v_nome             formulario.nome%type;
+v_apel             formulario.apel%type;
+v_dat_nasc         formulario.dat_nasc%type;
+v_num_doc_viag     formulario.num_doc_viag%type;
+v_assunto          varchar2(100);
+v_texto_final      varchar2(30000);
+v_texto_final_tit  varchar2(30000);
+v_texto_final_verdes varchar2(30000);
+v_email              param_det.val_param%type;
+x                    number;
+begin
+
+v_assunto := 'Vistos Verdes sem Parecer do Posto';
+v_texto_final_tit := 'Segue-se a lista dos vistos verdes por analisar. (' || to_char(sysdate,'yyyy/mm/dd hh24:mi:ss') || ')' || chr(10) || chr(10);
+open c1;
+loop
+     fetch c1 into v_ref_form_2, v_nome, v_apel, v_dat_nasc, v_num_doc_viag;
+     exit when c1%notfound;
+     if v_texto_final_verdes is null then
+        v_texto_final_verdes := 'VISTOS VERDES' || chr(10);
+        v_texto_final_verdes := v_texto_final_verdes || v_ref_form_2 || ';' || v_nome || ';' ||  v_apel || ';' ||  v_dat_nasc || ';' ||  v_num_doc_viag || ';' ||  chr(10) ||  chr(10);
+     else
+        v_texto_final_verdes := v_texto_final_verdes || v_ref_form_2 || ';' || v_nome || ';' ||  v_apel || ';' ||  v_dat_nasc || ';' ||  v_num_doc_viag || ';' ||  chr(10) ||  chr(10);
+     end if;
+     update formulario
+     set enviou_alerta_verde = 'A'
+     where ref_form_2 = v_ref_form_2;
+     commit;
+end loop;
+close c1;
+commit;
+if v_texto_final_verdes is null then
+   v_texto_final_verdes := 'Não existem pedidos verdes para analisar.' || chr(10);
+end if;
+
+v_texto_final := v_texto_final_tit || v_texto_final_verdes;
+open c_mail(69);
+loop
+    fetch c_mail into v_email;
+    exit when c_mail%notfound;
+    --v_email := 'joaopedro.oliveira@mne.pt';
+    x := pk_mail.testMail('noreplyvistos', 'noreplyvistos@mne.pt ', NULL,
+    v_email, NULL, NULL, v_assunto, v_texto_final);
+    if x = 0 then
+       update formulario
+       set enviou_alerta_verde = 'S'
+       where enviou_alerta_verde = 'A';
+       commit;
+    end if;
+end loop;
+close c_mail;
 commit;
 end;
 /
@@ -14065,8 +15243,9 @@ loop
           exit when c5%notfound;
           if v_consulta_vis in ('A','E','L') then
               update formulario
-              set consulta_vis = 'A'
-              where ref_form_2 = v_ref_form_2;
+              --set consulta_vis = 'A'
+              set consulta_vis = 'L'
+              where ref_form_2 = v_ref_form_2 and consulta_vis in ('V','W');
               commit;
               controla_w := 1;
           elsif v_consulta_vis in ('C','N','X') then
@@ -14319,6 +15498,8 @@ env := '<?xml version="1.0" encoding="UTF-8" ?>
     l_text           VARCHAR2(32767);
 
   BEGIN
+   UTL_HTTP.set_proxy('192.168.169.190:80', NULL);
+   UTL_HTTP.SET_PERSISTENT_CONN_SUPPORT(TRUE);
    http_req := UTL_HTTP.BEGIN_REQUEST(url, 'POST', 'HTTP/1.1');
 
    UTL_HTTP.set_persistent_conn_support(http_req, true);
@@ -14326,7 +15507,7 @@ env := '<?xml version="1.0" encoding="UTF-8" ?>
    utl_http.set_header(http_req,'Content-Type','text/xml;charset=UTF-8');
    UTL_HTTP.SET_HEADER(http_req, 'Content-Length', to_char(dbms_lob.getlength(env_ori)));
    UTL_HTTP.SET_HEADER(http_req, 'SOAPAction', action);
-   utl_http.set_header(http_req,'Transfer-Encoding','chunked');
+   --utl_http.set_header(http_req,'Transfer-Encoding','chunked');
 
    request_body_length := dbms_lob.getlength(env_ori);
    chunk_offset := 1;
@@ -14402,14 +15583,15 @@ env := '<?xml version="1.0" encoding="UTF-8" ?>
     generate_envelope(req, env, v_id_env_vis);
 
     --show_envelope(env);
-
+    UTL_HTTP.set_proxy('192.168.169.190:80', NULL);
+    UTL_HTTP.SET_PERSISTENT_CONN_SUPPORT(TRUE);
     http_req := utl_http.begin_request(url,'POST','HTTP/1.1');
 
     --utl_http.set_header(http_req,'Content-Type','text/xml');
     utl_http.set_header(http_req,'Content-Type','text/xml;charset=UTF-8');
     utl_http.set_header(http_req, 'Content-Length', to_char(dbms_lob.getlength(env)));
     utl_http.set_header(http_req, 'SOAPAction', action);
-    utl_http.set_header(http_req,'Transfer-Encoding','chunked');
+    --utl_http.set_header(http_req,'Transfer-Encoding','chunked');
 
     request_body_length := dbms_lob.getlength(env);
     chunk_offset := 1;
@@ -14512,8 +15694,8 @@ BEGIN
    select replace(env,'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>','')
    into env from dual;
 
-   /*insert into horta (campo, xmlfield) values('vis',env);
-   commit;*/
+   --insert into horta (campo, xmlfield) values('vis',env);
+   --commit;
    resp.doc := XMLTYPE.createxml(env);
 
    resp.doc := resp.doc.EXTRACT('/soap:Envelope/soap:Body/child::node()',
@@ -16132,7 +17314,7 @@ BEGIN
 		wconteudo := wformulario.info_mot_esta;
   ELSIF wcampo = 'FORMULARIO.ULT_NUM_VIN'
 	THEN
-		wconteudo := wformulario.ult_num_vin;
+		wconteudo := wformulario.ult_num_vin;  
 --
 ---> campos da tabela RECEP
 --
@@ -17682,7 +18864,6 @@ letra			varchar2(1);
 alt_pfile_temp		number(1):=0;
 begin
   p_filef := substr(p_file,2,length(p_file) - 2);
-
   select substr(p_filef,length(p_filef)-2,3) into v_extensao from dual;
 	if v_extensao = 'jpg' then
 	for i in 1..length(p_filef) loop
@@ -17822,7 +19003,6 @@ Pos 			number;
 refNum			varchar2(30);
 begin
 	pfileTemp := upper(substr(pfileTemp,1,length(pfileTemp) - 4));
-	--DBMS_OUTPUT.PUT_LINE(pfileTemp);
 	/*O seguinte ciclo permite obter o ref_form_2 do ficheiro que entra como parÃ¢metro*/
 	for i in 1..length(pfileTemp) loop
 		if(substr(pfileTemp,i,1)='@') then
@@ -17893,33 +19073,63 @@ v_ref_form_2		   formulario.ref_form_2%type;
 v_ano_form		     formulario.ano_form%type;
 v_num_form		     formulario.num_form%type;
 v_conta			       number;
+v_encontra_foto    varchar2(1);
+bf bfile;
+b blob;
+src_offset integer := 1;
+dest_offset integer := 1;
+v_seq_fotos_kiosk   number(10);
 begin
     shell('DIR ' || 'd:\fotos' || '\*.jpg > ' || 'd:\fotos' || '\teste.txt');
     id := UTL_FILE.FOPEN_NCHAR('d:\fotos', 'teste.txt', 'r',32767);
     loop
         begin
         UTL_FILE.GET_LINE_NCHAR(id,filedata);
-        if substr(filedata,length(filedata) - 2) = 'jpg' then
+        if upper(substr(filedata,length(filedata) - 2)) = 'JPG' then
            fich_header := substr(filedata,37);
            p_filef := fich_header;
+           if upper(substr(p_filef,1,5)) = 'KIOSK' then
+              begin
+              select distinct 's' into v_encontra_foto
+              from biometria_info
+              where num_doc_viagem = upper(substr(p_filef,6,length(p_filef) - 9))
+              and foto is null;
+              exception when no_data_found then
+                        v_encontra_foto := 'n';
+              end;
+
+              if v_encontra_foto = 's' then
+                 select seq_fotos_kiosk.nextval
+                 into v_seq_fotos_kiosk from dual;
+
+                 insert into temp_foto_kiosk (id, foto_name, foto)
+                 values (v_seq_fotos_kiosk, p_filef, empty_blob()) returning foto into b;
+                 bf := bfilename('FOTOGRAFIAS_KIOSK', p_filef);
+                 dbms_lob.open(bf, dbms_lob.file_readonly);
+                 dbms_lob.loadBlobFromFile(b, bf, dbms_lob.lobmaxsize, dest_offset, src_offset);
+                 dbms_lob.close(bf);
+                 dest_offset := 1;
+                 src_offset := 1;
+
+                 update biometria_info
+                 set foto = (select foto from temp_foto_kiosk
+                 where id = v_seq_fotos_kiosk)
+                 where num_doc_viagem = upper(substr(p_filef,6,length(p_filef) - 9))
+                 and foto is null;
+
+                 shell('move ' || '"d:\fotos\' || p_filef || '" d:\fotos\kiosk');
+              end if;
+           else
            p_file_temp := null;
            for i in 1..length(p_filef) loop
 		           letra := substr(p_filef,i,1);
 		           if letra <> '_' then
-                  if letra = ' ' then
-                     alt_pfile_temp := 2;
-                     exit;
-			            else
                      p_file_temp := p_file_temp || letra;
-                  end if;
 		           else
 			            p_file_temp := p_file_temp || ' ';
 			            alt_pfile_temp := 1;
 		           end if;
 	         end loop;
-	         if alt_pfile_temp = 2 then
-              null;
-           else
            begin
 		       select distinct 'x' into v_x
 		       from temp_imagens
@@ -17991,7 +19201,7 @@ begin
 		         shell('move ' || '"d:\fotos\' || p_filef || '" d:\fotos\tratadas');
 	       end if;
 	       commit;
-         end if;
+       end if;
       end if;
       exception when no_data_found then
                   exit;
@@ -20995,7 +22205,7 @@ BEGIN
   wf.nome_refer_3 := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO.NOME_REFER_3',1);
   wf.dest_prin_2 := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO.DEST_PRIN_2',1);
   wf.dest_prin_3 := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO.DEST_PRIN_3',1);
-
+  
   wf.email_req := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO.EMAIL_REQ',1);
   wf.email_tut := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO.EMAIL_TUT',1);
   wf.ult_num_vin := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO.ULT_NUM_VIN',1);
@@ -22046,12 +23256,12 @@ BEGIN
 	end if;
   wf.tratado := 'N';
 	wf.email_req := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO_WEB.EMAIL_REQ',1);
-
+  
   wf.email_tut := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO_WEB.EMAIL_TUT',1);
   wf.telefone_tut := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO_WEB.TELEFONE_TUT',1);
   wf.info_mot_esta := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO_WEB.INFO_MOT_ESTA',1);
   wf.ult_num_vin := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO_WEB.ULT_NUM_VIN',1);
-
+  
   wf.num_ident := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO_WEB.NUM_IDENT',1);
   wf.cod_pais_nac := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO_WEB.COD_PAIS_NAC',1);
   wf.est_civ := receber_pk.trata_item(wnum_fich,wtipo,'FORMULARIO_WEB.EST_CIV',1);
@@ -29923,6 +31133,7 @@ CREATE OR REPLACE PACKAGE BODY RPV."VISXML"         is
     vHEADER_DaRepresentedUser varchar2(100):= ValRepresentanteID;
     vHEADER_Variant           varchar2(4)  := vVariant;
     vHEADER_Test              varchar2(255)  := vTest;
+    v_prefix_vis              posto.prefix_vis%type;
 
   begin
     vDOCUMENTO := xmldom.newDOMDocument;
@@ -29947,7 +31158,11 @@ CREATE OR REPLACE PACKAGE BODY RPV."VISXML"         is
 
     vUSER_NODE.EXTEND;
     /*vdtc:MessageID*/
-    select 221 || to_char(seq_vis_messageid.nextval,'FM00000000000009') into vHEADER_MESSAGEID from dual;
+    select prefix_vis into v_prefix_vis
+    from posto
+    where cod_pos = Taref.Busca_Param_Glo1(3,null);
+    select v_prefix_vis || to_char(seq_vis_messageid.nextval,'FM0000000000009')
+    into vHEADER_MESSAGEID from dual;
     vELEMTENTO_ITEM := xmldom.createElement(vDOCUMENTO,
                                             'vdtc:MessageID');
     vUSER_NODE(4) := xmldom.appendChild(vUSER_NODE(3),
@@ -30114,7 +31329,7 @@ CREATE OR REPLACE PACKAGE BODY RPV."VISXML"         is
                                          v_loa_id);
     vUSER_NODE(5) := xmldom.appendChild(vUSER_NODE(5),
                                         xmldom.makeNode(vTEXTO_ITEM));
-                                        
+
     vUSER_NODE.extend;
     vELEMTENTO_ITEM := xmldom.createElement(vDOCUMENTO,
                                             'vdtc:AuthorityLocation');
@@ -33285,7 +34500,7 @@ CREATE OR REPLACE PACKAGE BODY RPV."VISXML"         is
                                          v_loa_id);
     vUSER_NODE(5) := xmldom.appendChild(vUSER_NODE(5),
                                         xmldom.makeNode(vTEXTO_ITEM));
-                                        
+
     vUSER_NODE.extend;
     vELEMTENTO_ITEM := xmldom.createElement(vDOCUMENTO,
                                             'vdtc:AuthorityLocation');
@@ -35153,7 +36368,7 @@ begin
                   v_num_ent_vin := null;
         end;
         v_dur_est_vin := replace(visxml_cs.extrai_valor_xml(inpfile,'DurationOfStay','ns3:',null,1),'nada',null);
-        v_place_app := visxml_cs.extrai_valor_xml(inpfile,'ApplicationAuthority','ns3:','Place',1);
+        v_place_app := substr(visxml_cs.extrai_valor_xml(inpfile,'ApplicationAuthority','ns3:','Place',1),1,50);
         v_country_app := visxml_cs.extrai_valor_xml(inpfile,'ApplicationAuthority','ns3:','Country',1);
         v_nome_autoridade := visxml_cs.extrai_valor_xml(inpfile,'ApplicationAuthority','ns3:','AuthorityName',1);
         v_attachmentid_finger_cand := visxml_cs.extrai_valor_xml(inpfile,'AttachmentID','ns3:',null,2);
@@ -35276,7 +36491,7 @@ begin
                   v_num_ent_vin := null;
         end;
         v_dur_est_vin := replace(visxml_cs.extrai_valor_xml(vmsg_resp_vis,'DurationOfStay','ns3:',null,1),'nada',null);
-        v_place_app := visxml_cs.extrai_valor_xml(vmsg_resp_vis,'ApplicationAuthority','ns3:','Place',1);
+        v_place_app := substr(visxml_cs.extrai_valor_xml(vmsg_resp_vis,'ApplicationAuthority','ns3:','Place',1),1,50);
         v_country_app := visxml_cs.extrai_valor_xml(vmsg_resp_vis,'ApplicationAuthority','ns3:','Country',1);
         v_nome_autoridade := visxml_cs.extrai_valor_xml(vmsg_resp_vis,'ApplicationAuthority','ns3:','AuthorityName',1);
         v_attachmentid_finger_cand := visxml_cs.extrai_valor_xml(vmsg_resp_vis,'AttachmentID','ns3:',null,2);
@@ -35406,7 +36621,7 @@ begin
                   v_num_ent_vin := null;
                 end;
                 v_dur_est_vin := replace(visxml_cs.extrai_valor_xml(vmsg_resp_vis,'DurationOfStay','ns3:',null,1),'nada',null);
-                v_place_app := visxml_cs.extrai_valor_xml(vmsg_resp_vis,'ApplicationAuthority','ns3:','Place',1);
+                v_place_app := substr(visxml_cs.extrai_valor_xml(vmsg_resp_vis,'ApplicationAuthority','ns3:','Place',1),1,50);
                 v_country_app := visxml_cs.extrai_valor_xml(vmsg_resp_vis,'ApplicationAuthority','ns3:','Country',1);
                 v_nome_autoridade := visxml_cs.extrai_valor_xml(vmsg_resp_vis,'ApplicationAuthority','ns3:','AuthorityName',1);
                 v_attachmentid_finger_cand := visxml_cs.extrai_valor_xml(vmsg_resp_vis,'AttachmentID','ns3:',null,1*2);
@@ -35586,7 +36801,7 @@ create or replace package body rpv.VISXML2 is
     vHEADER_DaRepresentedUser varchar2(100):= ValRepresentanteID;
     vHEADER_Variant           varchar2(4)  := vVariant;
     vHEADER_Test              varchar2(255)  := vTest;
-
+    v_prefix_vis              posto.prefix_vis%type;
   begin
     vDOCUMENTO := xmldom.newDOMDocument;
     xmldom.setVersion(vDOCUMENTO,
@@ -35610,8 +36825,12 @@ create or replace package body rpv.VISXML2 is
 
     vUSER_NODE.EXTEND;
     /*vdtc:MessageID*/
-    --select to_char(seq_vis_messageid.nextval,'FM00000000000000009') into vHEADER_MESSAGEID from dual;
-    select 221 || to_char(seq_vis_messageid.nextval,'FM00000000000009') into vHEADER_MESSAGEID from dual;
+    select prefix_vis into v_prefix_vis
+    from posto
+    where cod_pos = Taref.Busca_Param_Glo1(3,null);
+    select v_prefix_vis || to_char(seq_vis_messageid.nextval,'FM0000000000009')
+    into vHEADER_MESSAGEID from dual;
+
     vELEMTENTO_ITEM := xmldom.createElement(vDOCUMENTO,
                                             'vdtc:MessageID');
     vUSER_NODE(4) := xmldom.appendChild(vUSER_NODE(3),
@@ -36050,6 +37269,4302 @@ end loop;
 close c1;
 end;
 end;
+/
+
+prompt
+prompt Creating package body VISXML3
+prompt =============================
+prompt
+CREATE OR REPLACE PACKAGE BODY RPV.VISXML3
+IS
+   TYPE vTUSER_NODE IS TABLE OF xmldom.DOMNode;
+
+   vUSER_NODE                vTUSER_NODE := vTUSER_NODE ();
+   /*Constantes Globais*/
+   vCcaminhoXML              VARCHAR2 (100) := 'C:\PSAT\LOAD\ENVIO\';
+   vCcaminhoXSD              VARCHAR2 (100) := 'M:\Simulator\XSD\VIS\nsmessages\';
+   vHEADER_MESSAGEID         VARCHAR2 (20);
+   -- Web Services a serem usados a parti de 24/03/2010
+   -- Assyncronas
+   v_web_service             VARCHAR2 (2000)
+      := 'http://192.168.177.130:18080/Broker-Project1-context-root/VISSyncPort';
+   v_web_service_Unordered   VARCHAR2 (2000)
+      := 'http://192.168.177.130:18080/Broker-Project1-context-root/VISSyncPort';
+   v_web_service_bio         VARCHAR2 (2000)
+      := 'http://192.168.177.130:18080/Broker-Project1-context-root/VISSyncPort';
+   -- Syncronas
+   v_web_service_retrieval   VARCHAR2 (2000)
+      := 'http://192.168.177.130:18080/Broker-Project1-context-root/VISSyncPort';
+   v_web_service_search      VARCHAR2 (2000)
+      := 'http://192.168.177.130:18080/Broker-Project1-context-root/VISSyncPort';
+   v_web_service_bio_sync    VARCHAR2 (2000)
+      := 'http://192.168.177.130:18080/Broker-Project1-context-root/VISSyncPort';
+
+   msg_resp_vis              VARCHAR2 (32767);
+   vContract_env             tipo_comm_vistos.contract%TYPE;
+   vOperation_env            tipo_comm_vistos.operation%TYPE;
+
+
+   PROCEDURE ExportClob (p_file IN VARCHAR2, p_clob IN CLOB)
+   AS
+      LANGUAGE JAVA
+      NAME 'ClobHandler.ExportClob(java.lang.String, oracle.sql.CLOB)' ;
+
+   PROCEDURE write_clob_tofile (vCcaminhoXML   IN VARCHAR2,
+                                vfilename      IN VARCHAR2,
+                                v_clob         IN CLOB)
+   IS
+      buffer_size   CONSTANT BINARY_INTEGER := 32767;
+      amount                 BINARY_INTEGER;
+      offset                 NUMBER (38);
+      file_handle            UTL_FILE.FILE_TYPE;
+      buffer                 CLOB;
+   BEGIN
+      ExportClob (
+            vCcaminhoXML
+         || '\'
+         || vfilename
+         || '_'
+         || TO_CHAR (SYSDATE, 'yyyymmdd hh24miss')
+         || '.xml',
+         v_clob);
+   --ExportClob (vCcaminhoXML || '\' || vfilename || '.xml', v_clob);
+   --NULL;
+   END;
+
+   PROCEDURE PComum (p_returnValue           OUT xmldom.DOMDocument,
+                     vELEMENTOS_ROOT         OUT xmldom.DOMElement,
+                     identificador        IN     VARCHAR2,
+                     vHEADER_MESSAGEID       OUT VARCHAR2,
+                     vContract            IN     VARCHAR2,
+                     vOperation           IN     VARCHAR2,
+                     vEndUserID           IN     VARCHAR2,
+                     vVariant             IN     VARCHAR2,
+                     vRole                IN     VARCHAR2,
+                     vTest                IN     VARCHAR2,
+                     ValRepresentanteID   IN     VARCHAR2 DEFAULT NULL)
+   IS
+      vDOCUMENTO                  xmldom.DOMDocument;
+      vELEMTENTO_ITEM             xmldom.DOMElement;
+      vTEXTO_ITEM                 xmldom.DOMText;
+      /*Constantes*/
+      vHEADER_DateTime            VARCHAR2 (25) := VISXML.Fdatetz (SYSDATE);
+      vHEADER_DaEndUserID         VARCHAR2 (50) := vEndUserID;
+      vHEADER_DaUser              VARCHAR2 (7) := '0022.01';
+      vHEADER_Role                VARCHAR2 (7) := vRole;
+      vHEADER_DaSystemID          VARCHAR2 (50) := 'PT NS';
+      vHEADER_Contract            VARCHAR2 (7) := vContract;
+      vHEADER_Operation           VARCHAR2 (7) := vOperation;
+      vHEADER_DaRepresentedUser   VARCHAR2 (100) := ValRepresentanteID;
+      vHEADER_Variant             VARCHAR2 (4) := vVariant;
+      vHEADER_Test                VARCHAR2 (255) := vTest;
+   BEGIN
+      vDOCUMENTO := xmldom.newDOMDocument;
+      --xmldom.setVersion(vDOCUMENTO,
+      --                xmldom.getVersion(vDOCUMENTO));
+      --xmldom.setCharset(vDOCUMENTO,
+      --                xmldom.getCharset(vDOCUMENTO));
+      vUSER_NODE.EXTEND;
+      vUSER_NODE (1) := xmldom.makeNode (vDOCUMENTO);
+      /*Identificador*/
+      vELEMENTOS_ROOT := xmldom.createElement (vDOCUMENTO, identificador);
+      vUSER_NODE.EXTEND;
+      vUSER_NODE (2) :=
+         xmldom.appendChild (vUSER_NODE (1),
+                             xmldom.makeNode (vELEMENTOS_ROOT));
+      vUSER_NODE.EXTEND;
+      /*Header*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'Header');
+      vUSER_NODE (3) :=
+         xmldom.appendChild (vUSER_NODE (2),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      vUSER_NODE.EXTEND;
+
+      /*vdtc:MessageID*/
+      SELECT 224 || TO_CHAR(seq_vis_messageid.NEXTVAL,'FM00000000000009')
+        INTO vHEADER_MESSAGEID
+        FROM DUAL;
+
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:MessageID');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_MESSAGEID);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdtc:LogicalSessionID*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'vdtc:LogicalSessionID');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_MESSAGEID);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdtc:DateTime*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:DateTime');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_DateTime);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdtc:EndUserID*/
+      /*if vHEADER_DaEndUserID is not null then
+         vELEMTENTO_ITEM := xmldom.createElement(vDOCUMENTO,
+                                              'vdtc:EndUserID');
+         vUSER_NODE(4) := xmldom.appendChild(vUSER_NODE(3),
+                                          xmldom.makeNode(vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode(vDOCUMENTO,
+                                           vHEADER_DaEndUserID);
+         vUSER_NODE(4) := xmldom.appendChild(vUSER_NODE(4),
+                                          xmldom.makeNode(vTEXTO_ITEM));
+      end if;*/
+
+      /*vdtc:User*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:User');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_DaUser);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+      /*vdtc:EndUserRole*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:EndUserRole');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_Role);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdtc:SystemID*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:SystemID');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_DaSystemID);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdtc:Contract*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Contract');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_Contract);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdtc:Operation*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Operation');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_Operation);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdtc:RepresentedUser*/
+      IF vHEADER_DaRepresentedUser IS NOT NULL
+      THEN
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:RepresentedUser');
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (3),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO, vHEADER_DaRepresentedUser);
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      IF vVariant IS NOT NULL
+      THEN
+         /*vdtc:Variant*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Variant');
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (3),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_Variant);
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      IF vTest IS NOT NULL
+      THEN
+         /*vdtc:TestCaseID*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:TestCaseID');
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (3),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vHEADER_Test);
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      vUSER_NODE.delete (3, 4);
+
+      /*Fim do Header*/
+      p_returnValue := vDOCUMENTO;
+   END;
+
+
+   PROCEDURE PApplicationCreateApplication (
+      pANO_FORM      IN     FORMULARIO.ANO_FORM%TYPE,
+      pNUM_FORM      IN     FORMULARIO.NUM_FORM%TYPE,
+      msg_resp_vis      OUT VARCHAR2,
+      link_app       IN     VARCHAR2,
+      vRole          IN     VARCHAR2,
+      TestId         IN     VARCHAR2,
+      tudo           IN     VARCHAR2 DEFAULT 'S',
+      ambiente       IN     VARCHAR2 DEFAULT 'P')
+   IS
+      vDOCUMENTO              xmldom.DOMDocument;
+      vELEMENTOS_ROOT         xmldom.DOMElement;
+      vELEMTENTO_ITEM         xmldom.DOMElement;
+      vTEXTO_ITEM             xmldom.DOMText;
+      v_clob                  CLOB := 'xxx';
+      CREGS1                  FORMULARIO%ROWTYPE;
+      CREGS2                  FORM_P%ROWTYPE;
+      CREGSPosto              Posto%ROWTYPE;
+      CREGSPais_Transito      Pais_Transito%ROWTYPE;
+      vNomePai                FORMULARIO.FILIA%TYPE;
+      vNomeMae                FORMULARIO.FILIA%TYPE;
+      vCOD_CONC               concelho_sef.des_conc%TYPE;
+      v_des_doc               documento.des_doc%TYPE;
+      ValRepresentanteID      conversao_vis.valor_vis%TYPE;
+      v_cod_pais              pais.cod_pais%TYPE;
+      v_tipo_recolha_bio      BIOMETRIA_INFO.TIPO%TYPE;
+      v_mot_nao_recolha_bio   BIOMETRIA_INFO.OBS_NA%TYPE;
+
+      CURSOR CLREGS1
+      IS
+         SELECT A.*
+           FROM FORMULARIO A
+          WHERE A.ANO_FORM = pANO_FORM AND A.NUM_FORM = pNUM_FORM;
+
+      CURSOR CLREGS2
+      IS
+         SELECT B.*
+           FROM FORM_P B
+          WHERE B.ANO_FORM = pANO_FORM AND B.NUM_FORM = pNUM_FORM;
+
+      CURSOR CLREGSPosto (VCPosto IN posto.cod_pos%TYPE)
+      IS
+         SELECT B.*
+           FROM Posto b
+          WHERE b.cod_pos = vcposto;
+   BEGIN
+      OPEN CLREGS1;
+
+      FETCH CLREGS1 INTO CREGS1;
+
+      IF CLREGS1%NOTFOUND
+      THEN
+         RAISE NO_DATA_FOUND;
+      END IF;
+
+      CLOSE CLREGS1;
+
+      OPEN CLREGS2;
+
+      FETCH CLREGS2 INTO CREGS2;
+
+      CLOSE CLREGS2;
+
+      OPEN CLREGSposto (CREGS1.Cod_Pos);
+
+      FETCH CLREGSposto INTO CREGSPosto;
+
+      CLOSE CLREGSposto;
+
+      BEGIN
+         SELECT tipo, obs_na
+           INTO v_tipo_recolha_bio, v_mot_nao_recolha_bio
+           FROM biometria_info
+          WHERE ANO_FORM = pANO_FORM AND NUM_FORM = pNUM_FORM;
+      EXCEPTION
+         WHEN NO_DATA_FOUND
+         THEN
+            v_tipo_recolha_bio := NULL;
+            v_mot_nao_recolha_bio := NULL;
+      END;
+
+      IF CREGS2.APEL_NASC = '+'
+      THEN
+         CREGS2.APEL_NASC := CREGS1.APEL;
+      END IF;
+
+      Funcoes.obtem_header_det ('NSCreateApplication',
+                                vContract_env,
+                                vOperation_env);
+
+      IF CREGS1.COD_PAIS_SCH_REPRES IS NOT NULL
+      THEN
+         ValRepresentanteID :=
+            funcoes.obtem_valor_vis (CREGS1.COD_PAIS_SCH_REPRES, 'CT70_USER');
+      END IF;
+
+      PComum (vDOCUMENTO,
+              vELEMENTOS_ROOT,
+              'NSCreateApplication',
+              vHEADER_MESSAGEID,
+              vContract_env,
+              vOperation_env,
+              NULL,
+              NULL,
+              vRole,
+              TestId,
+              ValRepresentanteID);
+      /*Request*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'Request');
+      --vUSER_NODE.extend;
+      vUSER_NODE (3) :=
+         xmldom.appendChild (vUSER_NODE (2),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vUSER_NODE.EXTEND;
+      /*ApplicationNumber*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'ApplicationNumber');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM :=
+         xmldom.createTextNode (vDOCUMENTO,
+                                cregs1.cod_pais_sch_ref || cregs1.ref_form_2);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+      /*ApplicationData*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'ApplicationData');
+      vUSER_NODE.EXTEND;
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      /*vdta:Applicant*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Applicant');
+      vUSER_NODE.EXTEND;
+      vUSER_NODE (5) :=
+         xmldom.appendChild (vUSER_NODE (4),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      IF tudo = 'S'
+      THEN
+         /*vdta:Sex*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Sex');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGS1.Sexo, 'SEXO'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:NationalityForApplication*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:NationalityForApplication');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGS1.COD_PAIS_NAC_1, 'PAIS_NAC'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*vdta:NationalityAtBirth*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:NationalityAtBirth');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGS2.COD_PAIS_NASC, 'PAIS_NAC'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      /*vdta:DateOfBirth*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:DateOfBirth');
+      vUSER_NODE (6) :=
+         xmldom.appendChild (vUSER_NODE (5),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM :=
+         xmldom.createTextNode (
+            vDOCUMENTO,
+               SUBSTR (CREGS1.DAT_NASC, 1, 4)
+            || SUBSTR (CREGS1.DAT_NASC, 6, 2)
+            || SUBSTR (CREGS1.DAT_NASC, 9, 2));
+
+      vUSER_NODE (6) :=
+         xmldom.appendChild (vUSER_NODE (6), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdta:Name*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Name');
+      vUSER_NODE.EXTEND;
+      vUSER_NODE (6) :=
+         xmldom.appendChild (vUSER_NODE (5),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      /*vdta:Surname*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Surname');
+
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (6),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      /*vdta:SourceValue*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+      xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (7),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, --replace(CREGS1.APEL,' ',','));
+                                                       CREGS1.APEL);
+
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (7), xmldom.makeNode (vTEXTO_ITEM));
+
+      IF tudo = 'S'
+      THEN
+         /*vdta:Firstnames*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:Firstnames');
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, --replace(CREGS1.NOME,' ',','));
+                                                          CREGS1.NOME);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+
+         IF NVL (CREGS2.APEL_NASC, '+') != '+'
+         THEN
+            /*vdta:SurnameAtBirth*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:SurnameAtBirth');
+
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            /*vdta:SourceValue*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+            xmldom.setAttribute (vELEMTENTO_ITEM,
+                                 'PreTransliterated',
+                                 'true');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (vDOCUMENTO, CREGS2.APEL_NASC);
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+
+         --RETIREI PARA ENTRAR EM PRODUÇÃO
+         /*vdta:FormerSurnames*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:FormerSurnames');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:FormerSurname*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:FormerSurname');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'N/A');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+
+         IF CREGS1.apel_tut IS NOT NULL
+         THEN
+            /*vdta:ParentalAuthorityOrLegalGuardian*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO,
+                                     'vdta:ParentalAuthorityOrLegalGuardian');
+            vUSER_NODE.EXTEND;
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            IF CREGS1.apel_tut IS NOT NULL
+            THEN
+               /*vdta:Surname*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Surname');
+
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (vDOCUMENTO, CREGS1.apel_tut);
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+            END IF;
+
+            IF CREGS1.nome_tut IS NOT NULL
+            THEN
+               /*vdta:Firstnames*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Firstnames');
+
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (vDOCUMENTO, CREGS1.nome_tut);
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+            END IF;
+         END IF;
+
+         /*vdta:ApplicantsHomeAddress*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:ApplicantsHomeAddress');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Country*/
+         IF CREGS1.cod_pos IS NOT NULL
+         THEN
+            SELECT cod_pais
+              INTO v_cod_pais
+              FROM posto
+             WHERE cod_pos = CREGS1.cod_pos;
+         ELSE
+            v_cod_pais := CREGS1.COD_PAIS_NAC_1;
+         END IF;
+
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Country');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_cod_pais, 'PAIS'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:Street*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Street');
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CREGS2.ENDER_ACT);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:PlaceOfBirth*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:PlaceOfBirth');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Country*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Country');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGS2.COD_PAIS_NASC, 'PAIS_NAC'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:Place*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Place');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CREGS1.LOC_NASC);
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      /*vdta:ApplicationCoreData*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'vdta:ApplicationCoreData');
+      vUSER_NODE (5) :=
+         xmldom.appendChild (vUSER_NODE (4),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      /*vdta:Authority*/
+      vUSER_NODE.EXTEND;
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Authority');
+      vUSER_NODE (6) :=
+         xmldom.appendChild (vUSER_NODE (5),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityUniqueID');
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (6),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CREGSPosto.loa_id);
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (7), xmldom.makeNode (vTEXTO_ITEM));
+
+      vUSER_NODE.EXTEND;
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityLocation');
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (6),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      vUSER_NODE.EXTEND;
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+      vUSER_NODE (8) :=
+         xmldom.appendChild (vUSER_NODE (7),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM :=
+         xmldom.createTextNode (
+            vDOCUMENTO,
+            funcoes.obtem_valor_vis (CREGSPosto.COD_PAIS, 'PAIS'));
+      vUSER_NODE (8) :=
+         xmldom.appendChild (vUSER_NODE (8), xmldom.makeNode (vTEXTO_ITEM));
+
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Place');
+      vUSER_NODE (8) :=
+         xmldom.appendChild (vUSER_NODE (7),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CREGSPosto.CID_POS);
+      vUSER_NODE (8) :=
+         xmldom.appendChild (vUSER_NODE (8), xmldom.makeNode (vTEXTO_ITEM));
+
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityName');
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (6),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'MNE');
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (7), xmldom.makeNode (vTEXTO_ITEM));
+
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityType');
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (6),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+      vUSER_NODE (7) :=
+         xmldom.appendChild (vUSER_NODE (7), xmldom.makeNode (vTEXTO_ITEM));
+
+      IF tudo = 'S'
+      THEN
+         /*vdta:IntendedDateOfArrival*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:IntendedDateOfArrival');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               TO_CHAR (TO_DATE (CREGS1.dat_ent, 'YYYY/MM/DD'), 'YYYYMMDD'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*vdta:IntendedDateOfDeparture*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:IntendedDateOfDeparture');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               TO_CHAR (TO_DATE (CREGS1.DAT_SAI, 'YYYY/MM/DD'), 'YYYYMMDD'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DateOfApplication*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DateOfApplication');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO,
+                                   VISXML.Fchartz (CREGS1.DAT_PED));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DurationOfIntendedStayOrTransit*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:DurationOfIntendedStayOrTransit');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CREGS1.Dur_Esta);
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:VisaTypeRequested*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:VisaTypeRequested');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGS1.TIP_VIS_PED, 'VISA_TYPE'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      /*vdta:FingerprintsNotRequired*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'vdta:FingerprintsNotRequired');
+      vUSER_NODE (6) :=
+         xmldom.appendChild (vUSER_NODE (5),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      --IF NVL (CREGS1.tipo_recolha_bio, 1) IN (0, 2, 3)
+      IF NVL (v_tipo_recolha_bio, 1) IN (0, 2)
+      THEN
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'false');
+      ELSE
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'true');
+      END IF;
+
+      vUSER_NODE (6) :=
+         xmldom.appendChild (vUSER_NODE (6), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdta:FingerprintsNotApplicable*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'vdta:FingerprintsNotApplicable');
+      vUSER_NODE (6) :=
+         xmldom.appendChild (vUSER_NODE (5),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      --IF NVL (CREGS1.tipo_recolha_bio, 1) IN (1, 2)
+      IF NVL (v_tipo_recolha_bio, 1) IN (1, 2)
+      THEN
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'true');
+      ELSE
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'false');
+      END IF;
+
+      vUSER_NODE (6) :=
+         xmldom.appendChild (vUSER_NODE (6), xmldom.makeNode (vTEXTO_ITEM));
+
+      /*vdta:ReasonForFingerprintNotApplicable*/
+      --Incluir a razão da N/A da recolha das impressões digitais
+      --IF     NVL (CREGS1.tipo_recolha_bio, 1) IN (1, 2)
+      --AND CREGS1.mot_nao_recolha_bio IS NOT NULL
+      IF     NVL (v_tipo_recolha_bio, 1) IN (1, 2)
+         AND v_mot_nao_recolha_bio IS NOT NULL
+      THEN
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:ReasonForFingerprintNotApplicable');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         --vTEXTO_ITEM :=
+         --   xmldom.createTextNode (vDOCUMENTO, CREGS1.mot_nao_recolha_bio);
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO, v_mot_nao_recolha_bio);
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      IF tudo = 'S'
+      THEN
+         /*vdta:MemberStateOfFirstEntry*/
+         IF CREGS1.FRON_1_ENT IS NOT NULL
+         THEN
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO,
+                                     'vdta:MemberStateOfFirstEntry');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis (CREGS1.FRON_1_ENT, 'CT70_USER'));
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+
+         /*vdta:MemberStatesOfDestination*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:MemberStatesOfDestination');
+
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:MemberStateOfDestination*/
+         IF CREGS1.DEST_PRIN IS NOT NULL
+         THEN
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO,
+                                     'vdta:MemberStateOfDestination');
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis (CREGS1.DEST_PRIN, 'CT70_USER'));
+
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (7),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+
+         IF CREGS1.DEST_PRIN_2 IS NOT NULL
+         THEN
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO,
+                                     'vdta:MemberStateOfDestination');
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis (CREGS1.DEST_PRIN_2, 'CT70_USER'));
+
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (7),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+
+         IF CREGS1.DEST_PRIN_3 IS NOT NULL
+         THEN
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO,
+                                     'vdta:MemberStateOfDestination');
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis (CREGS1.DEST_PRIN_3, 'CT70_USER'));
+
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (7),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+
+         /*vdta:PlaceOfApplication*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:PlaceOfApplication');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Country*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGSPosto.COD_PAIS, 'PAIS'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:Place*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Place');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CREGSPosto.CID_POS);
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      IF tudo = 'S'
+      THEN
+         /*vdta:TravelDocument*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:TravelDocument');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:TravelDocumentType*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:TravelDocumentType');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGS1.COD_DOC, 'TIPO_PASS'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*vdta:TravelDocumentNumber*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:TravelDocumentNumber');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO, CREGS1.Num_Doc_Viag);
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DateOfIssue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DateOfIssue');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               TO_CHAR (TO_DATE (CREGS2.DAT_EMI_DOC, 'YYYY/MM/DD'),
+                        'YYYY-MM-DD'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:ValidUntil*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:ValidUntil');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               TO_CHAR (CREGS2.VALI_DOC_VIAG, 'YYYY-MM-DD'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         IF funcoes.obtem_valor_vis (CREGS1.COD_DOC, 'TIPO_PASS') = '0007.01'
+         THEN                                                    /*Se Outros*/
+            SELECT des_doc
+              INTO v_des_doc
+              FROM documento
+             WHERE cod_doc = CREGS1.COD_DOC;
+
+            /*vdta:OtherTravelDocument*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:OtherTravelDocument');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_des_doc);
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+
+         /*vdta:IssuingAuthorityOfTravelDocument*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:IssuingAuthorityOfTravelDocument');
+
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:CountryOfIssuingAuthority*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:CountryOfIssuingAuthority');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGS1.COD_PAIS_EMI_DOC, 'PAIS_NAC'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         IF    (    CREGS2.cod_conc_3 IS NOT NULL
+                AND CREGS1.NOME_REFER_3 IS NOT NULL)
+            OR (    CREGS2.cod_conc IS NOT NULL
+                AND CREGS1.NOME_REFER_1 IS NOT NULL)
+         THEN
+            /*vdta:Host*/
+            vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Host');
+            vUSER_NODE (5) :=
+               xmldom.appendChild (vUSER_NODE (4),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            IF CREGS2.cod_conc_3 IS NOT NULL
+            THEN
+               SELECT cs.des_conc
+                 INTO vCOD_CONC
+                 FROM concelho_sef cs, direccao_sef ds
+                WHERE     cs.cod_direc = ds.cod_direc
+                      AND cs.cod_conc = CREGS2.COD_CONC_3;
+
+               /*vdta:HostOrganisation*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:HostOrganisation');
+               vUSER_NODE (6) :=
+                  xmldom.appendChild (vUSER_NODE (5),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               /*vdta:Address*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Address');
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               /*vdta:Country*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Country');
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (
+                     vDOCUMENTO,
+                     funcoes.obtem_valor_vis ('PRT', 'PAIS'));
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+
+               /*vdta:Street*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Street');
+
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (vDOCUMENTO, CREGS2.ENDER_ESTAD_3);
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+
+               /*vdta:City*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:City');
+
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vCOD_CONC);
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+
+               /*vdta:Name*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Name');
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (vDOCUMENTO, CREGS1.NOME_REFER_3);
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+            ELSIF CREGS2.cod_conc IS NOT NULL
+            THEN
+               SELECT cs.des_conc
+                 INTO vCOD_CONC
+                 FROM concelho_sef cs, direccao_sef ds
+                WHERE     cs.cod_direc = ds.cod_direc
+                      AND cs.cod_conc = CREGS2.COD_CONC;
+
+               /*vdta:HostPerson*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:HostPerson');
+               vUSER_NODE (6) :=
+                  xmldom.appendChild (vUSER_NODE (5),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               /*vdta:Address*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Address');
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               /*vdta:Country*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Country');
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (
+                     vDOCUMENTO,
+                     funcoes.obtem_valor_vis ('PRT', 'PAIS'));
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+
+               /*vdta:Street*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Street');
+
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (vDOCUMENTO, CREGS2.ENDER_ESTAD);
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+
+               /*vdta:City*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:City');
+
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, vCOD_CONC);
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+
+               /*vdta:Name*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Name');
+               vUSER_NODE (7) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               /*vdta:Surname*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:Surname');
+
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (7),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               IF INSTR (CREGS1.NOME_REFER_1, ' ') = 0
+               THEN
+                  vTEXTO_ITEM :=
+                     xmldom.createTextNode (vDOCUMENTO, CREGS1.NOME_REFER_1);
+               ELSE
+                  vTEXTO_ITEM :=
+                     xmldom.createTextNode (
+                        vDOCUMENTO,
+                        --replace(substr(CREGS1.NOME_REFER_1,instr(CREGS1.NOME_REFER_1,' ') + 1 ),' ',','));
+                        SUBSTR (CREGS1.NOME_REFER_1,
+                                INSTR (CREGS1.NOME_REFER_1, ' ') + 1));
+               END IF;
+
+               vUSER_NODE (8) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+
+               IF INSTR (CREGS1.NOME_REFER_1, ' ') <> 0
+               THEN
+                  /*vdta:Firstnames*/
+                  vELEMTENTO_ITEM :=
+                     xmldom.createElement (vDOCUMENTO, 'vdta:Firstnames');
+
+                  vUSER_NODE (8) :=
+                     xmldom.appendChild (vUSER_NODE (7),
+                                         xmldom.makeNode (vELEMTENTO_ITEM));
+
+                  /*vdta:SourceValue*/
+                  vELEMTENTO_ITEM :=
+                     xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+                  xmldom.setAttribute (vELEMTENTO_ITEM,
+                                       'PreTransliterated',
+                                       'true');
+                  vUSER_NODE (8) :=
+                     xmldom.appendChild (vUSER_NODE (8),
+                                         xmldom.makeNode (vELEMTENTO_ITEM));
+                  vTEXTO_ITEM :=
+                     xmldom.createTextNode (
+                        vDOCUMENTO,
+                        SUBSTR (CREGS1.NOME_REFER_1,
+                                1,
+                                INSTR (CREGS1.NOME_REFER_1, ' ') - 1));
+                  vUSER_NODE (8) :=
+                     xmldom.appendChild (vUSER_NODE (8),
+                                         xmldom.makeNode (vTEXTO_ITEM));
+               END IF;
+            END IF;
+         END IF;
+
+         IF CREGS1.Cod_Prof IS NOT NULL
+         THEN
+            IF CREGS1.Cod_Prof = '31' AND CREGS2.Ent_Patr IS NOT NULL
+            THEN
+               /*vdta:EducationalEstablishment*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO,
+                                        'vdta:EducationalEstablishment');
+               vUSER_NODE (5) :=
+                  xmldom.appendChild (vUSER_NODE (4),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               /*vdta:EducationalEstablishmentName*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO,
+                                        'vdta:EducationalEstablishmentName');
+               vUSER_NODE (6) :=
+                  xmldom.appendChild (vUSER_NODE (5),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+
+               vUSER_NODE (6) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (vDOCUMENTO, CREGS2.Ent_Patr);
+               vUSER_NODE (6) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+            END IF;
+
+            /*vdta:Occupation*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:Occupation');
+            vUSER_NODE (5) :=
+               xmldom.appendChild (vUSER_NODE (4),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            /*vdta:Occupation*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:Occupation');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis (CREGS1.Cod_Prof, 'PROF'));
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+
+            IF CREGS2.Ent_Patr IS NOT NULL
+            THEN
+               /*vdta:EmployerName*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:EmployerName');
+
+               vUSER_NODE (6) :=
+                  xmldom.appendChild (vUSER_NODE (5),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               /*vdta:SourceValue*/
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+               xmldom.setAttribute (vELEMTENTO_ITEM,
+                                    'PreTransliterated',
+                                    'true');
+
+               vUSER_NODE (6) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (vDOCUMENTO, CREGS2.Ent_Patr);
+               vUSER_NODE (6) :=
+                  xmldom.appendChild (vUSER_NODE (6),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+            END IF;
+         END IF;
+
+         /*vdta:MainPurposesOfJourney*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:MainPurposesOfJourney');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:MainPurposeOfJourney*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:MainPurposeOfJourney');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CREGS1.cod_esta_1, 'MOTIVO_ESTADA'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:MainPurposeOfJourney*/
+         IF CREGS1.cod_esta_2 IS NOT NULL
+         THEN
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:MainPurposeOfJourney');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis (CREGS1.cod_esta_2,
+                                           'MOTIVO_ESTADA'));
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+
+         /*vdta:MainPurposeOfJourney*/
+         IF CREGS1.cod_esta_3 IS NOT NULL
+         THEN
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:MainPurposeOfJourney');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis (CREGS1.cod_esta_3,
+                                           'MOTIVO_ESTADA'));
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+
+
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:MainPurposeOfJourney');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis ('01', 'MOTIVO_ESTADA'));
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:MainPurposeOfJourney');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis ('02', 'MOTIVO_ESTADA'));
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+      END IF;
+
+      IF link_app IS NOT NULL
+      THEN
+         /*PreviousApplicationNumber*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'PreviousApplicationNumber');
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (3),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, link_app);
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      /*Escrever para ficheiro*/
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns',
+         'http://www.europa.eu/schengen/vis/xsd/v2/nsmessages');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:vdta',
+         'http://www.europa.eu/schengen/vis/xsd/v2/types/Application');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:vdtc',
+         'http://www.europa.eu/schengen/vis/xsd/v2/types/Common');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:xsi',
+         'http://www.w3.org/2001/XMLSchema-instance');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xsi:schemaLocation',
+            'http://www.europa.eu/schengen/vis/xsd/v2/nsmessages'
+         || CHR (13)
+         || vCcaminhoXSD
+         || 'NSCreateApplication.xsd');
+
+      /*xmldom.writeToFile(vDOCUMENTO,
+                         vCcaminhoXML || 'ApplicationCreateApplication' || TO_CHAR(sysdate,'yyyy/mm/dd hh24:mi:ss') ||'.xml');*/
+      xmldom.writeToClob (vDOCUMENTO, v_clob);
+
+      SELECT REPLACE (v_clob, 'Header xmlns=""', 'Header')
+        INTO v_clob
+        FROM DUAL;
+
+      SELECT REPLACE (v_clob, 'Request xmlns=""', 'Request')
+        INTO v_clob
+        FROM DUAL;
+
+        /*
+      write_clob_tofile (vCcaminhoXML   => vCcaminhoXML,
+                         vfilename      => 'ApplicationCreateApplication',
+                         v_clob         => v_clob);
+*/
+      INSERT INTO temp_env_vis (id_env_vis,
+                                ano_form,
+                                num_form,
+                                cod_comm_vistos,
+                                message_xml,
+                                cri_uti,
+                                cri_dat)
+           VALUES (vHEADER_MESSAGEID,
+                   pANO_FORM,
+                   pNUM_FORM,
+                   1,
+                   v_clob,
+                   USER,
+                   SYSDATE);
+
+      --commit;
+      --Chama VIS
+
+      msg_resp_vis :=
+         Funcoes.Envia_Vis (NULL,
+                    v_web_service,
+                    NULL,
+                    vHEADER_MESSAGEID,
+                    ambiente);
+
+      /*Libertar os recursos*/
+      xmldom.freeDocument (vDOCUMENTO);
+   END;
+
+   PROCEDURE encode_to_base64 (p_blob IN BLOB, v_result OUT CLOB)
+   IS
+      v_clob             CLOB;
+      --v_result clob;
+      v_offset           INTEGER;
+      v_chunk_size       BINARY_INTEGER := (48 / 4) * 3;
+      v_buffer_varchar   VARCHAR2 (48);
+      v_buffer_raw       RAW (48);
+   BEGIN
+      DBMS_LOB.createtemporary (v_clob, TRUE);
+      v_offset := 1;
+
+      FOR i IN 1 .. CEIL (DBMS_LOB.getlength (p_blob) / v_chunk_size)
+      LOOP
+         DBMS_LOB.read (p_blob,
+                        v_chunk_size,
+                        v_offset,
+                        v_buffer_raw);
+         v_buffer_raw := UTL_ENCODE.base64_encode (v_buffer_raw);
+         v_buffer_varchar := UTL_RAW.cast_to_varchar2 (v_buffer_raw);
+         DBMS_LOB.writeappend (v_clob,
+                               LENGTH (v_buffer_varchar),
+                               v_buffer_varchar);
+         v_offset := v_offset + v_chunk_size;
+      END LOOP;
+
+      v_result := v_clob;
+      DBMS_LOB.freetemporary (v_clob);
+   --return v_result;
+   END;
+
+   PROCEDURE PAttAppDatAddBiom (pANO_FORM       IN     FORMULARIO.ANO_FORM%TYPE,
+                                pNUM_FORM       IN     FORMULARIO.NUM_FORM%TYPE,
+                                estado_tarefa      OUT NUMBER,
+                                tipo            IN     VARCHAR2,
+                                msg_resp_vis       OUT VARCHAR2,
+                                vRole           IN     VARCHAR2,
+                                TestId          IN     VARCHAR2)
+   IS
+      vDOCUMENTO              xmldom.DOMDocument;
+      vELEMENTOS_ROOT         xmldom.DOMElement;
+      vELEMTENTO_ITEM         xmldom.DOMElement;
+      vTEXTO_ITEM             xmldom.DOMText;
+      v_clob                  CLOB := 'xxx';
+      dom_cast                xmldom.DOMCharacterData;
+      v_bf_foto               temp_imagens.foto%TYPE;
+      v_blob_Bio              biometria_info.BIO%TYPE;
+      p_Foto_Clob             CLOB;
+      vApplicationNumber      formulario.ref_form_2%TYPE;
+      v_cod_pais_sch_ref      formulario.cod_pais_sch_ref%TYPE;
+      v_cod_pais              posto.cod_pais%TYPE;
+      v_cid_pos               posto.cid_pos%TYPE;
+      v_des_pos               posto.des_pos%TYPE;
+      v_bio_clob              CLOB;
+      id                      UTL_FILE.FILE_TYPE;
+      filedata                VARCHAR2 (1000);
+      buf                     VARCHAR2 (32000);
+      l_amt                   NUMBER := 1;
+      offset                  NUMBER := 1;
+      tam                     NUMBER (10);
+      i                       NUMBER (10) := 1;
+      V_COD_PAIS_SCH_REPRES   formulario.cod_pais_sch_repres%TYPE;
+      ValRepresentanteID      conversao_vis.valor_vis%TYPE;
+      v_loa_id                posto.loa_id%TYPE;
+
+      v_dir                   VARCHAR2 (250);
+      v_file_name_foto        VARCHAR2 (100);
+      bf                      BFILE;
+      b                       BLOB;
+      src_offset              INTEGER := 1;
+      dest_offset             INTEGER := 1;
+   BEGIN
+      BEGIN
+         SELECT f.ref_form_2,
+                t.foto,
+                B.BIO,
+                f.cod_pais_sch_ref,
+                p.cod_pais,
+                p.cid_pos,
+                p.des_pos,
+                P.LOA_ID
+           INTO vApplicationNumber,
+                v_bf_foto,
+                v_blob_Bio,
+                v_cod_pais_sch_ref,
+                v_cod_pais,
+                v_cid_pos,
+                v_des_pos,
+                v_loa_id
+           FROM formulario f,
+                temp_imagens t,
+                temp_imagens_det d,
+                posto p,
+                biometria_info b
+          WHERE     f.ano_form = pANO_FORM
+                AND f.num_form = pNUM_FORM
+                AND f.ref_form_2 = d.ref_form_2
+                AND t.foto IS NOT NULL
+                AND f.cod_pos = p.cod_pos
+                AND t.num_ordem = d.num_ordem
+                AND f.ANO_FORM = B.ANO_FORM(+)
+                AND f.NUM_FORM = B.NUM_FORM(+);
+      EXCEPTION
+         WHEN NO_DATA_FOUND
+         THEN
+            estado_tarefa := 99;
+      END;
+
+      SELECT f.ref_form_2, f.cod_pais_sch_ref, f.COD_PAIS_SCH_REPRES
+        INTO vApplicationNumber, v_cod_pais_sch_ref, V_COD_PAIS_SCH_REPRES
+        FROM formulario f
+       WHERE f.ano_form = pANO_FORM AND f.num_form = pNUM_FORM;
+
+      Funcoes.obtem_header_det ('NSAddBiometricData',
+                                vContract_env,
+                                vOperation_env);
+
+      IF V_COD_PAIS_SCH_REPRES IS NOT NULL
+      THEN
+         ValRepresentanteID :=
+            funcoes.obtem_valor_vis (V_COD_PAIS_SCH_REPRES, 'CT70_USER');
+      END IF;
+
+      PComum (vDOCUMENTO,
+              vELEMENTOS_ROOT,
+              'NSAddBiometricData',
+              vHEADER_MESSAGEID,
+              vContract_env,
+              vOperation_env,
+              NULL,
+              NULL,
+              vRole,
+              TestId,
+              ValRepresentanteID);
+
+      IF NVL (estado_tarefa, 0) <> 99
+      THEN
+         /*Request*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'Request');
+         vUSER_NODE (3) :=
+            xmldom.appendChild (vUSER_NODE (2),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*Authority*/
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'Authority');
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (3),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityUniqueID');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_loa_id);
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityLocation');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_cod_pais, 'PAIS'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Place');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_cid_pos);
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityName');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'MNE');
+         --v_des_pos || ' ' || v_cid_pos);
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityType');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*ApplicationNumber*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'ApplicationNumber');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (3),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO,
+                                   v_cod_pais_sch_ref || vApplicationNumber);
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*BiometricData*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'BiometricData');
+         vUSER_NODE (4) :=
+            xmldom.appendChild (vUSER_NODE (3),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         IF tipo = 'FINGER'
+         THEN
+            encode_to_base64 (v_blob_bio, v_bio_clob);
+            /*FingerprintSet*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:FingerprintSet');
+            vUSER_NODE (5) :=
+               xmldom.appendChild (vUSER_NODE (4),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            /*MasterData*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:MasterData');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            /*FingerprintSetType*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:FingerprintSetType');
+            vUSER_NODE.EXTEND;
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (7),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+
+            /*DataSource*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:DataSource');
+            vUSER_NODE.EXTEND;
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            tam := LENGTH (v_bio_clob);
+
+            WHILE i <= tam
+            LOOP
+               IF i = 1
+               THEN
+                  DBMS_LOB.read (v_bio_clob,
+                                 l_amt,
+                                 1000,
+                                 buf);
+                  buf := SUBSTR (v_bio_clob, i, 1000);
+                  vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, buf);
+
+                  vUSER_NODE (6) :=
+                     xmldom.appendChild (vUSER_NODE (6),
+                                         xmldom.makeNode (vTEXTO_ITEM));
+
+                  dom_cast := xmldom.makeCharacterData (vUSER_NODE (6));
+               ELSE
+                  DBMS_LOB.read (v_bio_clob,
+                                 l_amt,
+                                 (offset * i),
+                                 buf);
+                  buf := SUBSTR (v_bio_clob, i, 1000);
+                  xmldom.appendData (dom_cast, buf);
+               END IF;
+
+               i := i + 1000;
+            END LOOP;
+         ELSIF tipo = 'PHOTO'
+         THEN
+            IF v_bf_foto IS NOT NULL
+            THEN
+               DBMS_LOB.FILEGETNAME (v_bf_foto, v_dir, v_file_name_foto);
+               DBMS_OUTPUT.put_line ('Nome fich: ' || v_file_name_foto);
+               bf := BFILENAME ('FOTOGRAFIAS', v_file_name_foto);
+               DBMS_LOB.open (bf, DBMS_LOB.file_readonly);
+               DBMS_LOB.createtemporary (b, TRUE);
+               DBMS_LOB.loadBlobFromFile (b,
+                                          bf,
+                                          DBMS_LOB.lobmaxsize,
+                                          dest_offset,
+                                          src_offset);
+               DBMS_LOB.close (bf);
+
+               encode_to_base64 (b, p_Foto_Clob);
+            END IF;
+
+            /*FacialImage*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:FacialImage');
+            vUSER_NODE (5) :=
+               xmldom.appendChild (vUSER_NODE (4),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            /*MasterData*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:MasterData');
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            /*ImageType*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:ImageType');
+            vUSER_NODE.EXTEND;
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (7),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+
+            /*DataSource*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:DataSource');
+            vUSER_NODE.EXTEND;
+            vUSER_NODE (6) :=
+               xmldom.appendChild (vUSER_NODE (5),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+
+            tam := LENGTH (p_Foto_Clob);
+
+            WHILE i <= tam
+            LOOP
+               IF i = 1
+               THEN
+                  DBMS_LOB.read (p_Foto_Clob,
+                                 l_amt,
+                                 1000,
+                                 buf);
+                  buf := SUBSTR (p_Foto_Clob, i, 1000);
+                  vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, buf);
+
+                  vUSER_NODE (6) :=
+                     xmldom.appendChild (vUSER_NODE (6),
+                                         xmldom.makeNode (vTEXTO_ITEM));
+
+                  dom_cast := xmldom.makeCharacterData (vUSER_NODE (6));
+               ELSE
+                  DBMS_LOB.read (p_Foto_Clob,
+                                 l_amt,
+                                 (offset * i),
+                                 buf);
+                  buf := SUBSTR (p_Foto_Clob, i, 1000);
+                  xmldom.appendData (dom_cast, buf);
+               END IF;
+
+               i := i + 1000;
+            END LOOP;
+         END IF;
+
+         /*Escrever para ficheiro*/
+         dsa_srv_makexml_mpt.p_setAttrString (
+            vELEMENTOS_ROOT,
+            'xmlns',
+            'http://www.europa.eu/schengen/vis/xsd/v2/nsmessages');
+         dsa_srv_makexml_mpt.p_setAttrString (
+            vELEMENTOS_ROOT,
+            'xmlns:vdta',
+            'http://www.europa.eu/schengen/vis/xsd/v2/types/Application');
+         dsa_srv_makexml_mpt.p_setAttrString (
+            vELEMENTOS_ROOT,
+            'xmlns:vdtc',
+            'http://www.europa.eu/schengen/vis/xsd/v2/types/Common');
+         dsa_srv_makexml_mpt.p_setAttrString (
+            vELEMENTOS_ROOT,
+            'xmlns:xsi',
+            'http://www.w3.org/2001/XMLSchema-instance');
+         dsa_srv_makexml_mpt.p_setAttrString (
+            vELEMENTOS_ROOT,
+            'xsi:schemaLocation',
+               'http://www.europa.eu/schengen/vis/xsd/v2/nsmessages'
+            || CHR (13)
+            || vCcaminhoXSD
+            || 'NSAddBiometricData.xsd');
+         /*xmldom.writeToFile(vDOCUMENTO,
+                            vCcaminhoXML ||
+                            'AttachApplicationDataAddBiometricData.xml');*/
+         xmldom.writeToClob (vDOCUMENTO, v_clob);
+
+         SELECT REPLACE (v_clob, 'Header xmlns=""', 'Header')
+           INTO v_clob
+           FROM DUAL;
+
+         SELECT REPLACE (v_clob, 'Request xmlns=""', 'Request')
+           INTO v_clob
+           FROM DUAL;
+
+         /*
+          write_clob_tofile (
+             vCcaminhoXML   => vCcaminhoXML,
+             vfilename      => 'AttachApplicationDataAddBiometricData',
+             v_clob         => v_clob);
+         */
+         INSERT INTO temp_env_vis (id_env_vis,
+                                   ano_form,
+                                   num_form,
+                                   cod_comm_vistos,
+                                   message_xml,
+                                   cri_uti,
+                                   cri_dat)
+              VALUES (vHEADER_MESSAGEID,
+                      pANO_FORM,
+                      pNUM_FORM,
+                      7,
+                      v_clob,
+                      USER,
+                      SYSDATE);
+
+         --commit;
+         --Chama VIS
+
+         msg_resp_vis :=
+            funcoes.Envia_Vis (NULL,
+                                   v_web_service,
+                                   NULL,
+                                   vHEADER_MESSAGEID);
+         estado_tarefa := 0;
+
+         /*Libertar os recursos*/
+         xmldom.freeDocument (vDOCUMENTO);
+      END IF;
+   END;
+
+
+   PROCEDURE PDecCreateAppDec (V_Num_App   IN VARCHAR2,
+                               V_Dec_Aut   IN VARCHAR2,
+                               v_Tipo      IN VARCHAR2,
+                               v_Valor     IN VARCHAR2,
+                               vRole       IN VARCHAR2,
+                               TestId      IN VARCHAR2,
+                               ambiente    IN VARCHAR2 DEFAULT 'P')
+   IS
+      CURSOR c1
+      IS
+         SELECT i.cod_pare_vis
+           FROM indef_justifica_parecer i, formulario f
+          WHERE     i.ano_form = f.ano_form
+                AND i.num_form = f.num_form
+                AND f.ref_form_2 = V_Num_App
+                AND i.origem = V_Dec_Aut;
+
+      CURSOR c2
+      IS
+         SELECT i.cod_pare_vis
+           FROM indef_justifica_parecer i, formulario f
+          WHERE     i.ano_form = f.ano_form
+                AND i.num_form = f.num_form
+                AND f.ref_form_2 = V_Num_App
+                AND i.reapr = 'S';
+
+      CURSOR c3
+      IS
+         SELECT i.cod_pare_vis
+           FROM indef_justifica_parecer i, formulario f
+          WHERE     i.ano_form = f.ano_form
+                AND i.num_form = f.num_form
+                AND f.ref_form_2 = V_Num_App;
+
+      vDOCUMENTO              xmldom.DOMDocument;
+      vELEMENTOS_ROOT         xmldom.DOMElement;
+      vELEMTENTO_ITEM         xmldom.DOMElement;
+      vTEXTO_ITEM             xmldom.DOMText;
+      v_clob                  CLOB := 'xxx';
+      pANO_FORM               formulario.ano_form%TYPE;
+      pNUM_FORM               formulario.num_form%TYPE;
+      v_cod_pais_sch_ref      formulario.cod_pais_sch_ref%TYPE;
+      v_COD_PAIS              posto.cod_pais%TYPE;
+      v_CID_POS               posto.cid_pos%TYPE;
+      v_des_pos               posto.des_pos%TYPE;
+      v_cod_pare_vis          indef_justifica_parecer.cod_pare_vis%TYPE;
+      v_dat_emi               vinheta.dat_emi%TYPE;
+      V_COD_PAIS_SCH_REPRES   formulario.cod_pais_sch_repres%TYPE;
+      ValRepresentanteID      conversao_vis.valor_vis%TYPE;
+      v_loa_id                posto.loa_id%TYPE;
+   BEGIN
+      SELECT f.ano_form,
+             f.num_form,
+             f.cod_pais_sch_ref,
+             p.cod_pais,
+             p.cid_pos,
+             p.des_pos,
+             f.COD_PAIS_SCH_REPRES,
+             p.loa_id
+        INTO pANO_FORM,
+             pNUM_FORM,
+             v_cod_pais_sch_ref,
+             v_COD_PAIS,
+             v_CID_POS,
+             v_des_pos,
+             V_COD_PAIS_SCH_REPRES,
+             v_loa_id
+        FROM formulario f, posto p
+       WHERE ref_form_2 = V_Num_App AND f.cod_pos = p.cod_pos;
+
+      Funcoes.obtem_header_det ('NSCreateApplicationDecision',
+                                vContract_env,
+                                vOperation_env);
+
+      IF V_COD_PAIS_SCH_REPRES IS NOT NULL
+      THEN
+         ValRepresentanteID :=
+            funcoes.obtem_valor_vis (V_COD_PAIS_SCH_REPRES, 'CT70_USER');
+      END IF;
+
+      IF v_tipo = 'RV'
+      THEN
+         PComum (vDOCUMENTO,
+                 vELEMENTOS_ROOT,
+                 'NSCreateApplicationDecision',
+                 vHEADER_MESSAGEID,
+                 vContract_env,
+                 vOperation_env,
+                 NULL,
+                 '0010',
+                 vRole,
+                 TestId,
+                 ValRepresentanteID);
+      ELSIF v_tipo = 'RE'
+      THEN
+         PComum (vDOCUMENTO,
+                 vELEMENTOS_ROOT,
+                 'NSCreateApplicationDecision',
+                 vHEADER_MESSAGEID,
+                 vContract_env,
+                 vOperation_env,
+                 NULL,
+                 '0009',
+                 vRole,
+                 TestId,
+                 ValRepresentanteID);
+      ELSIF v_tipo = 'W'
+      THEN
+         PComum (vDOCUMENTO,
+                 vELEMENTOS_ROOT,
+                 'NSCreateApplicationDecision',
+                 vHEADER_MESSAGEID,
+                 vContract_env,
+                 vOperation_env,
+                 NULL,
+                 '0008',
+                 vRole,
+                 TestId,
+                 ValRepresentanteID);
+      ELSIF v_tipo = 'G'
+      THEN
+         PComum (vDOCUMENTO,
+                 vELEMENTOS_ROOT,
+                 'NSCreateApplicationDecision',
+                 vHEADER_MESSAGEID,
+                 vContract_env,
+                 vOperation_env,
+                 NULL,
+                 '0011',
+                 vRole,
+                 TestId,
+                 ValRepresentanteID);
+      END IF;
+
+      /*Request*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'Request');
+      vUSER_NODE (3) :=
+         xmldom.appendChild (vUSER_NODE (2),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      /*ApplicationNumber*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'ApplicationNumber');
+      vUSER_NODE.EXTEND;
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM :=
+         xmldom.createTextNode (vDOCUMENTO, v_cod_pais_sch_ref || v_Num_App);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+      /*ApplicationDecision*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'ApplicationDecision');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      --REFUSEVISA - RV
+      --REFUSEEXAMINATION - RE
+      --WITHDRAW - W
+      --GRANT - G
+
+      IF V_TIPO = 'RV'
+      THEN
+         /*vdta:RefuseVisa*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:RefuseVisa');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Authority*/
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:Authority');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityUniqueID');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_loa_id);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityLocation');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Place');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_cid_pos);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityName');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'MNE');
+         --v_des_pos || ' ' || v_cid_pos);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityType');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DecisionDate*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionDate');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO, VISXML.Fdatetz (SYSDATE));
+
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+
+         /*vdta:DecisionPlace*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionPlace');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Country*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:Place*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Place');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_CID_POS);
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:RefusalGrounds*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:RefusalGrounds');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         IF V_Dec_Aut <> 'MNE'
+         THEN
+            IF V_Dec_Aut NOT IN ('REAPR', 'TODOS')
+            THEN
+               OPEN c1;
+
+               LOOP
+                  FETCH c1 INTO v_cod_pare_vis;
+
+                  EXIT WHEN c1%NOTFOUND;
+
+                  /*vdta:RefusalGround*/
+                  vELEMTENTO_ITEM :=
+                     xmldom.createElement (vDOCUMENTO, 'vdta:RefusalGround');
+                  vUSER_NODE.EXTEND;
+                  vUSER_NODE (7) :=
+                     xmldom.appendChild (vUSER_NODE (6),
+                                         xmldom.makeNode (vELEMTENTO_ITEM));
+                  vTEXTO_ITEM :=
+                     xmldom.createTextNode (vDOCUMENTO, v_cod_pare_vis);
+                  vUSER_NODE (7) :=
+                     xmldom.appendChild (vUSER_NODE (7),
+                                         xmldom.makeNode (vTEXTO_ITEM));
+               END LOOP;
+
+               CLOSE c1;
+            ELSIF V_Dec_Aut = 'REAPR'
+            THEN
+               OPEN c2;
+
+               LOOP
+                  FETCH c2 INTO v_cod_pare_vis;
+
+                  EXIT WHEN c2%NOTFOUND;
+
+                  /*vdta:RefusalGround*/
+                  vELEMTENTO_ITEM :=
+                     xmldom.createElement (vDOCUMENTO, 'vdta:RefusalGround');
+                  vUSER_NODE.EXTEND;
+                  vUSER_NODE (7) :=
+                     xmldom.appendChild (vUSER_NODE (6),
+                                         xmldom.makeNode (vELEMTENTO_ITEM));
+                  vTEXTO_ITEM :=
+                     xmldom.createTextNode (vDOCUMENTO, v_cod_pare_vis);
+                  vUSER_NODE (7) :=
+                     xmldom.appendChild (vUSER_NODE (7),
+                                         xmldom.makeNode (vTEXTO_ITEM));
+               END LOOP;
+
+               CLOSE c2;
+            ELSIF V_Dec_Aut = 'TODOS'
+            THEN
+               OPEN c3;
+
+               LOOP
+                  FETCH c3 INTO v_cod_pare_vis;
+
+                  EXIT WHEN c3%NOTFOUND;
+
+                  /*vdta:RefusalGround*/
+                  vELEMTENTO_ITEM :=
+                     xmldom.createElement (vDOCUMENTO, 'vdta:RefusalGround');
+                  vUSER_NODE.EXTEND;
+                  vUSER_NODE (7) :=
+                     xmldom.appendChild (vUSER_NODE (6),
+                                         xmldom.makeNode (vELEMTENTO_ITEM));
+                  vTEXTO_ITEM :=
+                     xmldom.createTextNode (vDOCUMENTO, v_cod_pare_vis);
+                  vUSER_NODE (7) :=
+                     xmldom.appendChild (vUSER_NODE (7),
+                                         xmldom.makeNode (vTEXTO_ITEM));
+               END LOOP;
+
+               CLOSE c3;
+            END IF;
+         ELSE
+            /*vdta:RefusalGround*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:RefusalGround');
+            vUSER_NODE.EXTEND;
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (6),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_valor);
+            vUSER_NODE (7) :=
+               xmldom.appendChild (vUSER_NODE (7),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+      END IF;
+
+      IF V_TIPO = 'RE'
+      THEN
+         /*vdta:DiscontinueExamination*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DiscontinueExamination');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Authority*/
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:Authority');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityUniqueID');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_loa_id);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityLocation');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Place');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_cid_pos);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityName');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'MNE');
+         --v_des_pos || ' ' || v_cid_pos);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityType');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DecisionDate*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionDate');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO, VISXML.Fdatetz (SYSDATE));
+
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DecisionPlace*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionPlace');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Country*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:Place*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Place');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_CID_POS);
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:CompetentToExamine*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:CompetentToExamine');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_valor);
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      IF V_TIPO = 'W'
+      THEN
+         /*vdta:CloseApplication*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:CloseApplication');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Authority*/
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:Authority');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityUniqueID');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_loa_id);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityLocation');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Place');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_cid_pos);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityName');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'MNE');
+         --v_des_pos || ' ' || v_cid_pos);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityType');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DecisionDate*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionDate');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO, VISXML.Fdatetz (SYSDATE));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:ClosingGrounds*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:ClosingGrounds');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:ClosingGround*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:ClosingGround');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_valor);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      IF V_TIPO = 'G'
+      THEN
+         /*vdta:GrantVisa*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:GrantVisa');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Authority*/
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:Authority');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityUniqueID');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_loa_id);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityLocation');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Place');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_cid_pos);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityName');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'MNE');
+         --v_des_pos || ' ' || v_cid_pos);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityType');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         SELECT dat_emi
+           INTO v_dat_emi
+           FROM vinheta
+          WHERE     ano_form = pANO_FORM
+                AND num_form = pNUM_FORM
+                AND est_vin = 'E';
+
+         /*vdta:DecisionDate*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionDate');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               VISXML.Fdatetz (TO_DATE (v_dat_emi, 'yyyy/mm/dd')));
+         --Fdatetz(SYSDATE));
+
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*vdta:DecisionPlace*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionPlace');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Country*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:Place*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Place');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_CID_POS);
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      /*Escrever para ficheiro*/
+
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns',
+         'http://www.europa.eu/schengen/vis/xsd/v2/nsmessages');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:vdta',
+         'http://www.europa.eu/schengen/vis/xsd/v2/types/Application');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:vdtc',
+         'http://www.europa.eu/schengen/vis/xsd/v2/types/Common');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:xsi',
+         'http://www.w3.org/2001/XMLSchema-instance');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xsi:schemaLocation',
+            'http://www.europa.eu/schengen/vis/xsd/v2/nsmessages'
+         || CHR (13)
+         || vCcaminhoXSD
+         || 'NSCreateApplicationDecision.xsd');
+
+      /*
+      xmldom.writeToFile(vDOCUMENTO,
+                         vCcaminhoXML ||
+                         'DecisionCreateApplicationDecision.xml');
+      */
+
+      xmldom.writeToClob (vDOCUMENTO, v_clob);
+
+      SELECT REPLACE (v_clob, 'Header xmlns=""', 'Header')
+        INTO v_clob
+        FROM DUAL;
+
+      SELECT REPLACE (v_clob, 'Request xmlns=""', 'Request')
+        INTO v_clob
+        FROM DUAL;
+
+      /*
+        write_clob_tofile (
+           vCcaminhoXML   => vCcaminhoXML,
+           vfilename      => 'DecisionCreateApplicationDecision',
+           v_clob         => v_clob);
+      */
+      INSERT INTO temp_env_vis (id_env_vis,
+                                ano_form,
+                                num_form,
+                                cod_comm_vistos,
+                                message_xml,
+                                cri_uti,
+                                cri_dat)
+           VALUES (vHEADER_MESSAGEID,
+                   pANO_FORM,
+                   pNUM_FORM,
+                   6,
+                   v_clob,
+                   USER,
+                   SYSDATE);
+
+      --commit;
+      --Chama VIS
+
+      msg_resp_vis :=
+         funcoes.Envia_Vis (NULL,
+                            v_web_service,
+                            NULL,
+                            vHEADER_MESSAGEID,
+                            ambiente);
+
+      /*Libertar os recursos*/
+      xmldom.freeDocument (vDOCUMENTO);
+   END;
+
+
+   PROCEDURE PDecCreateVisCreatDec (
+      pANO_FORM         IN FORMULARIO.ANO_FORM%TYPE,
+      pNUM_FORM         IN FORMULARIO.NUM_FORM%TYPE,
+      pSticker_ID       IN VARCHAR2,
+      pSticker_ID_Old   IN VARCHAR2,
+      v_tipo            IN VARCHAR2,
+      vRole             IN VARCHAR2,
+      TestId            IN VARCHAR2,
+      ambiente          IN VARCHAR2 DEFAULT 'P',
+      pSticker_FilledManually IN VARCHAR2 DEFAULT 'false')
+   IS
+      vDOCUMENTO              xmldom.DOMDocument;
+      vELEMENTOS_ROOT         xmldom.DOMElement;
+      vELEMTENTO_ITEM         xmldom.DOMElement;
+      vTEXTO_ITEM             xmldom.DOMText;
+      v_clob                  CLOB := 'xxx';
+      vApplicationNumber      formulario.ref_form_2%TYPE;
+      vCod_Pais_Nac_1         formulario.cod_pais_nac_1%TYPE;
+      vCod_Pais_Sch_Ref       formulario.cod_pais_sch_ref%TYPE;
+      v_cod_pais              posto.cod_pais%TYPE;
+      v_cid_pos               posto.cid_pos%TYPE;
+      v_des_pos               posto.des_pos%TYPE;
+      V_COD_PAIS_SCH_REPRES   formulario.cod_pais_sch_repres%TYPE;
+      ValRepresentanteID      conversao_vis.valor_vis%TYPE;
+      v_loa_id                posto.loa_id%TYPE;
+
+      TYPE TerCurTyp IS REF CURSOR;
+
+      c_territory             TerCurTyp;
+      max_array               NUMBER (5);
+      paises_menos            VARCHAR (500);
+      v_territory             pais.des_pais%TYPE;
+      c_where                 VARCHAR (500);
+      v_stmt_str              VARCHAR (500);
+
+      CURSOR CVIN
+      IS
+         SELECT A.*
+           FROM VINHETA A
+          WHERE     A.NUM_VIN = pSticker_ID
+                AND A.ANO_FORM = pANO_FORM
+                AND A.NUM_FORM = pNUM_FORM;
+
+      CURSOR CVIN_OLD
+      IS
+         SELECT A.*
+           FROM VINHETA A
+          WHERE A.NUM_VIN = pSticker_ID;
+
+      CURSOR CVIN2
+      IS
+         SELECT A.*
+           FROM VINHETA A
+          WHERE     A.ANO_FORM = pANO_FORM
+                AND A.NUM_FORM = pNUM_FORM
+                AND A.EST_VIN = 'E';
+
+      CRVIN                   VINHETA%ROWTYPE;
+   BEGIN
+      IF pSticker_ID IS NOT NULL
+      THEN
+         IF pSticker_ID_Old IS NOT NULL
+         THEN
+            OPEN CVIN_OLD;
+
+            FETCH CVIN_OLD INTO CRVIN;
+
+            IF CVIN_OLD%NOTFOUND
+            THEN
+               RAISE NO_DATA_FOUND;
+            END IF;
+
+            CLOSE CVIN_OLD;
+         ELSE
+            OPEN CVIN;
+
+            FETCH CVIN INTO CRVIN;
+
+            IF CVIN%NOTFOUND
+            THEN
+               RAISE NO_DATA_FOUND;
+            END IF;
+
+            CLOSE CVIN;
+         END IF;
+      ELSE
+         OPEN CVIN2;
+
+         FETCH CVIN2 INTO CRVIN;
+
+         IF CVIN2%NOTFOUND
+         THEN
+            RAISE NO_DATA_FOUND;
+         END IF;
+
+         CLOSE CVIN2;
+      END IF;
+
+      SELECT f.ref_form_2,
+             f.cod_pais_nac_1,
+             f.cod_pais_sch_ref,
+             p.cod_pais,
+             p.cid_pos,
+             p.des_pos,
+             f.COD_PAIS_SCH_REPRES,
+             p.loa_id
+        INTO vApplicationNumber,
+             vCod_Pais_Nac_1,
+             vCod_Pais_Sch_Ref,
+             v_cod_pais,
+             v_cid_pos,
+             v_des_pos,
+             V_COD_PAIS_SCH_REPRES,
+             v_loa_id
+        FROM formulario f, posto p
+       WHERE     f.ano_form = pANO_FORM
+             AND f.num_form = pNUM_FORM
+             AND f.cod_pos = p.cod_pos;
+
+      Funcoes.obtem_header_det ('NSCreateVisaCreationDecision',
+                                vContract_env,
+                                vOperation_env);
+
+      IF V_COD_PAIS_SCH_REPRES IS NOT NULL
+      THEN
+         ValRepresentanteID :=
+            funcoes.obtem_valor_vis (V_COD_PAIS_SCH_REPRES, 'CT70_USER');
+      END IF;
+
+      IF v_tipo = 'I'
+      THEN
+         PComum (vDOCUMENTO,
+                 vELEMENTOS_ROOT,
+                 'NSCreateVisaCreationDecision',
+                 vHEADER_MESSAGEID,
+                 vContract_env,
+                 vOperation_env,
+                 NULL,
+                 '0012',
+                 vRole,
+                 TestId,
+                 ValRepresentanteID);
+      ELSIF v_tipo = 'E'
+      THEN
+         PComum (vDOCUMENTO,
+                 vELEMENTOS_ROOT,
+                 'NSCreateVisaCreationDecision',
+                 vHEADER_MESSAGEID,
+                 vContract_env,
+                 vOperation_env,
+                 NULL,
+                 '0013',
+                 vRole,
+                 TestId,
+                 ValRepresentanteID);
+      END IF;
+
+      /*Request*/
+      vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'Request');
+      vUSER_NODE (3) :=
+         xmldom.appendChild (vUSER_NODE (2),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      /*ApplicationNumber*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'ApplicationNumber');
+      vUSER_NODE.EXTEND;
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+      vTEXTO_ITEM :=
+         xmldom.createTextNode (vDOCUMENTO,
+                                vCod_Pais_Sch_Ref || vApplicationNumber);
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (4), xmldom.makeNode (vTEXTO_ITEM));
+      /*VisaCreationDecision*/
+      vELEMTENTO_ITEM :=
+         xmldom.createElement (vDOCUMENTO, 'VisaCreationDecision');
+      vUSER_NODE (4) :=
+         xmldom.appendChild (vUSER_NODE (3),
+                             xmldom.makeNode (vELEMTENTO_ITEM));
+
+      --ExtendVisaWithNewSticker - E
+      --IssueVisa - I
+
+      IF V_TIPO = 'I'
+      THEN
+         /*vdta:IssueVisa*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:IssueVisa');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Authority*/
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:Authority');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityUniqueID');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_loa_id);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityLocation');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Place');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_cid_pos);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityName');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'MNE');
+         --v_des_pos || ' ' || v_cid_pos);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityType');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DecisionDate*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionDate');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               VISXML.Fdatetz (TO_DATE (CRVIN.DAT_EMI, 'YYYY/MM/DD')));
+         --Fdatetz(SYSDATE));
+
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DecisionPlace*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionPlace');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Country*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:Place*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Place');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_CID_POS);
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:VisaSticker*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:VisaSticker');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:VisaStickerNumber*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:VisaStickerNumber');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO,
+                                   REPLACE (CRVIN.NUM_VIN, 'P', 'PRT0'));
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:VisaType*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:VisaType');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:VisaNewType*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:VisaNewType');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CRVIN.tip_vis, 'VISA_TYPE_VIN'));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:VisaStickerFilledInManually*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:VisaStickerFilledInManually');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, pSticker_FilledManually);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:PeriodOfValidity*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:PeriodOfValidity');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdtc:Begin*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Begin');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               VISXML.Fdatetz (TO_DATE (CRVIN.DAT_INI, 'YYYY/MM/DD')));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*vdtc:End*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:End');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               VISXML.Fdatetz (TO_DATE (CRVIN.DAT_FIN, 'YYYY/MM/DD')));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DurationOfStay*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DurationOfStay');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CRVIN.dur_esta);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:NumberOfEntries*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:NumberOfEntries');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CRVIN.num_ent, 'NUM_ENT'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:TerritorialValidity*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:TerritorialValidity');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:TravelTerritories*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:TravelTerritories');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         IF CRVIN.vin_para LIKE '%(%'
+         THEN                                     --Sinal - na emissão vinheta
+            SELECT   (  LENGTH (CRVIN.vin_para)
+                      - LENGTH (REPLACE (CRVIN.vin_para, ',')))
+                   + 1
+              INTO max_array
+              FROM DUAL;
+
+            SELECT SUBSTR (CRVIN.vin_para, 20, LENGTH (CRVIN.vin_para) - 20)
+              INTO paises_menos
+              FROM DUAL;
+
+            IF max_array = 1
+            THEN
+               c_where := '(' || '''' || paises_menos || '''' || ')';
+            ELSE
+               FOR i IN 1 .. max_array
+               LOOP
+                  IF c_where IS NULL
+                  THEN
+                     c_where :=
+                        '(' || '''' || SUBSTR (paises_menos, 1, 2) || '''';
+                  ELSE
+                     c_where :=
+                           c_where
+                        || ','
+                        || ''''
+                        || SUBSTR (paises_menos, 3 * i - 2, 2)
+                        || '''';
+                  END IF;
+
+                  IF i = max_array
+                  THEN
+                     c_where := c_where || ')';
+                  END IF;
+               END LOOP;
+            END IF;
+
+            v_stmt_str :=
+                  'select p.des_pais from pais_sch ps, pais p where ps.cod_pais_sch = p.cod_pais and sigla_pais not in '
+               || c_where;
+
+            OPEN c_territory FOR v_stmt_str;
+
+            LOOP
+               FETCH c_territory INTO v_territory;
+
+               EXIT WHEN c_territory%NOTFOUND;
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:TravelTerritory');
+               vUSER_NODE (9) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (
+                     vDOCUMENTO,
+                     funcoes.obtem_valor_vis (UPPER (v_territory),
+                                              'CT06_TERRITORY'));
+               vUSER_NODE (9) :=
+                  xmldom.appendChild (vUSER_NODE (9),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+            END LOOP;
+
+            CLOSE c_territory;
+         ELSIF SUBSTR (CRVIN.vin_para, 3, 1) = ','
+         THEN                                     --Sinal + na emissão vinheta
+            SELECT   (  LENGTH (CRVIN.vin_para)
+                      - LENGTH (REPLACE (CRVIN.vin_para, ',')))
+                   + 1
+              INTO max_array
+              FROM DUAL;
+
+            FOR i IN 1 .. max_array
+            LOOP
+               IF c_where IS NULL
+               THEN
+                  c_where :=
+                     '(' || '''' || SUBSTR (CRVIN.vin_para, 1, 2) || '''';
+               ELSE
+                  c_where :=
+                        c_where
+                     || ','
+                     || ''''
+                     || SUBSTR (CRVIN.vin_para, 3 * i - 2, 2)
+                     || '''';
+               END IF;
+
+               IF i = max_array
+               THEN
+                  c_where := c_where || ')';
+               END IF;
+            END LOOP;
+
+            v_stmt_str :=
+                  'select p.des_pais from pais_sch ps, pais p where ps.cod_pais_sch = p.cod_pais and sigla_pais in '
+               || c_where;
+
+            OPEN c_territory FOR v_stmt_str;
+
+            LOOP
+               FETCH c_territory INTO v_territory;
+
+               EXIT WHEN c_territory%NOTFOUND;
+               vELEMTENTO_ITEM :=
+                  xmldom.createElement (vDOCUMENTO, 'vdta:TravelTerritory');
+               vUSER_NODE (9) :=
+                  xmldom.appendChild (vUSER_NODE (8),
+                                      xmldom.makeNode (vELEMTENTO_ITEM));
+               vTEXTO_ITEM :=
+                  xmldom.createTextNode (
+                     vDOCUMENTO,
+                     funcoes.obtem_valor_vis (UPPER (v_territory),
+                                              'CT06_TERRITORY'));
+               vUSER_NODE (9) :=
+                  xmldom.appendChild (vUSER_NODE (9),
+                                      xmldom.makeNode (vTEXTO_ITEM));
+            END LOOP;
+
+            CLOSE c_territory;
+         ELSE
+            /*vdta:TravelTerritory*/
+            vELEMTENTO_ITEM :=
+               xmldom.createElement (vDOCUMENTO, 'vdta:TravelTerritory');
+            vUSER_NODE (9) :=
+               xmldom.appendChild (vUSER_NODE (8),
+                                   xmldom.makeNode (vELEMTENTO_ITEM));
+            vTEXTO_ITEM :=
+               xmldom.createTextNode (
+                  vDOCUMENTO,
+                  funcoes.obtem_valor_vis (UPPER (CRVIN.vin_para),
+                                           'CT06_TERRITORY'));
+            vUSER_NODE (9) :=
+               xmldom.appendChild (vUSER_NODE (9),
+                                   xmldom.makeNode (vTEXTO_ITEM));
+         END IF;
+
+         /*vdta:ValidFor*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:ValidFor');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CRVIN.vin_para);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:IssuanceOnSeparateSheet*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:IssuanceOnSeparateSheet');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'false');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      ELSIF V_TIPO = 'E'
+      THEN
+         /*vdta:ExtendVisa*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:ExtendVisa');
+         vUSER_NODE (5) :=
+            xmldom.appendChild (vUSER_NODE (4),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Authority*/
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:Authority');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityUniqueID');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_loa_id);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityLocation');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vUSER_NODE.EXTEND;
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Place');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_cid_pos);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityName');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'MNE');
+         --v_des_pos || ' ' || v_cid_pos);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdtc:AuthorityType');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0001.01');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DecisionDate*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionDate');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, VISXML.Fdatetz (SYSDATE));
+
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DecisionPlace*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DecisionPlace');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:Country*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Country');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (v_COD_PAIS, 'PAIS'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:Place*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:Place');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:SourceValue*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:SourceValue');
+         xmldom.setAttribute (vELEMTENTO_ITEM, 'PreTransliterated', 'true');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, v_CID_POS);
+
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:VisaSticker*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:VisaSticker');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdta:VisaStickerNumber*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:VisaStickerNumber');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO,
+                                   REPLACE (CRVIN.NUM_VIN, 'P', 'PRT0'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*vdta:VisaType*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:VisaType');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:VisaNewType*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:VisaNewType');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CRVIN.tip_vis, 'VISA_TYPE_VIN'));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:VisaStickerFilledInManually*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:VisaStickerFilledInManually');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, pSticker_FilledManually);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:PeriodOfValidity*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:PeriodOfValidity');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         /*vdtc:Begin*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:Begin');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               VISXML.Fdatetz (TO_DATE (CRVIN.DAT_INI, 'YYYY/MM/DD')));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*vdtc:End*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdtc:End');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               VISXML.Fdatetz (TO_DATE (CRVIN.DAT_FIN, 'YYYY/MM/DD')));
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:DurationOfStay*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:DurationOfStay');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CRVIN.dur_esta);
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:NumberOfEntries*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:NumberOfEntries');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (CRVIN.num_ent, 'NUM_ENT'));
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:TerritorialValidity*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:TerritorialValidity');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:TravelTerritories*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:TravelTerritories');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:TravelTerritory*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:TravelTerritory');
+         vUSER_NODE (9) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (
+               vDOCUMENTO,
+               funcoes.obtem_valor_vis (UPPER (CRVIN.vin_para),
+                                        'CT06_TERRITORY'));
+         vUSER_NODE (9) :=
+            xmldom.appendChild (vUSER_NODE (9),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:ValidFor*/
+         vELEMTENTO_ITEM := xmldom.createElement (vDOCUMENTO, 'vdta:ValidFor');
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, CRVIN.vin_para);
+         vUSER_NODE (8) :=
+            xmldom.appendChild (vUSER_NODE (8),
+                                xmldom.makeNode (vTEXTO_ITEM));
+         /*vdta:IssuanceOnSeparateSheet*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:IssuanceOnSeparateSheet');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, 'false');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:ExtensionGrounds*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:ExtensionGrounds');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+
+         /*vdta:ExtensionGround*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO, 'vdta:ExtensionGround');
+         vUSER_NODE.EXTEND;
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM := xmldom.createTextNode (vDOCUMENTO, '0003.01');
+         vUSER_NODE (7) :=
+            xmldom.appendChild (vUSER_NODE (7),
+                                xmldom.makeNode (vTEXTO_ITEM));
+
+         /*vdta:PreviousVisaStickerNumber*/
+         vELEMTENTO_ITEM :=
+            xmldom.createElement (vDOCUMENTO,
+                                  'vdta:PreviousVisaStickerNumber');
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (5),
+                                xmldom.makeNode (vELEMTENTO_ITEM));
+         vTEXTO_ITEM :=
+            xmldom.createTextNode (vDOCUMENTO,
+                                   REPLACE (pSticker_ID_Old, 'P', 'PRT0'));
+         vUSER_NODE (6) :=
+            xmldom.appendChild (vUSER_NODE (6),
+                                xmldom.makeNode (vTEXTO_ITEM));
+      END IF;
+
+      /*Escrever para ficheiro*/
+
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns',
+         'http://www.europa.eu/schengen/vis/xsd/v2/nsmessages');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:vdta',
+         'http://www.europa.eu/schengen/vis/xsd/v2/types/Application');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:vdtc',
+         'http://www.europa.eu/schengen/vis/xsd/v2/types/Common');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xmlns:xsi',
+         'http://www.w3.org/2001/XMLSchema-instance');
+      dsa_srv_makexml_mpt.p_setAttrString (
+         vELEMENTOS_ROOT,
+         'xsi:schemaLocation',
+            'http://www.europa.eu/schengen/vis/xsd/v2/nsmessages'
+         || CHR (13)
+         || vCcaminhoXSD
+         || 'NSCreateVisaCreateDecision.xsd');
+
+      /*xmldom.writeToFile(vDOCUMENTO,
+                         vCcaminhoXML ||
+                         'DecisionCreateVisaCreationDecision.xml');*/
+      xmldom.writeToClob (vDOCUMENTO, v_clob);
+
+      SELECT REPLACE (v_clob, 'Header xmlns=""', 'Header')
+        INTO v_clob
+        FROM DUAL;
+
+      SELECT REPLACE (v_clob, 'Request xmlns=""', 'Request')
+        INTO v_clob
+        FROM DUAL;
+
+      /*
+      write_clob_tofile (
+         vCcaminhoXML   => vCcaminhoXML,
+         vfilename      => 'DecisionCreateVisaCreationDecision',
+         v_clob         => v_clob);
+      */
+      INSERT INTO temp_env_vis (id_env_vis,
+                                ano_form,
+                                num_form,
+                                cod_comm_vistos,
+                                message_xml,
+                                cri_uti,
+                                cri_dat)
+           VALUES (vHEADER_MESSAGEID,
+                   pANO_FORM,
+                   pNUM_FORM,
+                   9,
+                   v_clob,
+                   USER,
+                   SYSDATE);
+
+      --commit;
+      --Chama VIS
+      msg_resp_vis :=
+         funcoes.Envia_Vis (NULL,
+                            v_web_service,
+                            NULL,
+                            vHEADER_MESSAGEID,
+                            ambiente);
+
+      /*Libertar os recursos*/
+      xmldom.freeDocument (vDOCUMENTO);
+   END;
+
+
+    PROCEDURE P_EXE_PED_VIS IS
+        MAX_TENTATIVAS  CONSTANT NUMBER(1) := 5;
+        ESTADO_ENVIADO  CONSTANT NUMBER(1) := 0;
+        ESTADO_OK       CONSTANT NUMBER(1) := 1;
+        ESTADO_SEMRESP  CONSTANT NUMBER(1) := 2;
+        ESTADO_NAOAPLI  CONSTANT NUMBER(1) := 3;
+
+        v_ano_form FORMULARIO.ANO_FORM%TYPE;
+        v_num_form FORMULARIO.NUM_FORM%TYPE;
+        v_cod_pare FORMULARIO.COD_PARE%TYPE;
+
+        v_num_vin VINHETA.NUM_VIN%TYPE;
+
+        v_dados VARCHAR2(100);
+        v_msg_ok NUMBER(1) := 0;
+
+        v_MSG_RESP_VIS clob;
+
+        v_conta pls_integer := 0;
+        v_upd_parecer pls_integer := 0;
+        v_sair pls_integer := 0;
+        v_msg5_proc pls_integer := 0;
+
+        v_Ret_Val NUMBER(2) := 0;
+
+        v_obs PED_EMITIR_VISTOS.OBS%TYPE;
+
+    BEGIN
+        FOR i IN (SELECT * FROM PED_EMITIR_VISTOS WHERE (F_PROC IS NULL OR F_PROC = 'N'))
+        LOOP
+            v_upd_parecer := 0;
+            v_sair := 0;
+            v_msg5_proc := 0;
+
+            dbms_output.put_line('A processar: '|| i.REF_FORM_2);
+
+            BEGIN
+                SELECT ANO_FORM, NUM_FORM, COD_PARE
+                INTO v_ano_form, v_num_form, v_cod_pare
+                FROM FORMULARIO
+                WHERE REF_FORM_2 = i.REF_FORM_2;
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    v_obs := 'Não existe o PRT';
+                    dbms_output.put_line(v_obs);
+                    UPDATE PED_EMITIR_VISTOS SET f_proc = 'E', obs = v_obs WHERE REF_FORM_2 = i.REF_FORM_2;
+                    COMMIT;
+            END;
+
+            -------------------------------------
+            -- MENSAGEM 1 - CREATE APPLICATION --
+            -------------------------------------
+            IF i.f_est_msg1 IS NULL THEN
+                -- envia a msg
+                RPV.VISXML3.PAPPLICATIONCREATEAPPLICATION ( v_ano_form, v_num_form, v_MSG_RESP_VIS, NULL, '0002', NULL, 'S', 'P' );
+
+                -- MENSAGEM ENVIADA
+                UPDATE PED_EMITIR_VISTOS SET f_est_msg1 = ESTADO_ENVIADO, num_tentativas = 0 WHERE REF_FORM_2 = i.REF_FORM_2;
+                COMMIT;
+                --CONTINUE; -- sai
+                v_sair := 1;
+            ELSE
+                IF i.f_est_msg1 in (ESTADO_ENVIADO, ESTADO_SEMRESP) THEN
+                    -- faz retrieve
+                    v_msg_ok := 0;
+                    --DBMS_LOB.CREATETEMPORARY(MSG_RESP_VIS, true);
+                    RPV.VISXML.PRETRIEVALAPPEXAMINATION ( 'PRT'||i.ref_form_2, NULL, v_MSG_RESP_VIS, v_ano_form, v_num_form, '0002', NULL, 'P' );
+                    --
+                    v_dados := RPV.VISXML_CS.Extrai_Valor_XML(v_MSG_RESP_VIS, 'InfoCode', '', null, 1);
+                    --
+                    IF v_dados = 'nada' THEN
+                        v_dados := RPV.VISXML_CS.Extrai_Valor_XML(v_MSG_RESP_VIS, 'DateOfBirth', 'ns3:', null, 1);
+                        IF v_dados != 'nada' THEN
+                            v_msg_ok := 1;
+                        END IF;
+                    END IF;
+                    --DEPENDENDO DO RESULTADO
+                    IF (v_msg_ok = 1) THEN
+                        UPDATE PED_EMITIR_VISTOS SET f_est_msg1 = ESTADO_OK, num_tentativas = num_tentativas + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                        COMMIT;
+                    ELSE
+                        IF NVL(i.num_tentativas,0) + 1 = MAX_TENTATIVAS THEN
+                            UPDATE PED_EMITIR_VISTOS SET f_proc = 'E', f_est_msg1 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                            COMMIT;
+                            --CONTINUE; -- sai
+                            v_sair := 1;
+                        ELSE
+                            UPDATE PED_EMITIR_VISTOS SET f_est_msg1 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                            COMMIT;
+                            --CONTINUE; -- sai
+                            v_sair := 1;
+                        END IF;
+                    END IF;
+                END IF;
+            END IF;
+
+            IF v_sair = 0 THEN
+                ------------------------
+                -- MENSAGEM 2 - PHOTO --
+                ------------------------
+                IF i.f_est_msg2 IS NULL THEN
+                    -- envia a msg
+                    RPV.VISXML3.PATTAPPDATADDBIOM ( v_ano_form, v_num_form, v_RET_VAL, 'PHOTO', v_MSG_RESP_VIS, '0002', NULL );
+                    -- MENSAGEM ENVIADA
+                    UPDATE PED_EMITIR_VISTOS SET f_est_msg2 = ESTADO_ENVIADO, num_tentativas = 0 WHERE REF_FORM_2 = i.REF_FORM_2;
+                    COMMIT;
+                    --CONTINUE; -- sai
+                    v_sair := 1;
+                ELSE
+                    IF i.f_est_msg2 in (ESTADO_ENVIADO, 2) THEN
+                        -- faz retrieve
+                        v_msg_ok := 0;
+                        --DBMS_LOB.CREATETEMPORARY(MSG_RESP_VIS, true);
+                        RPV.VISXML.PRETRIEVALAPPEXAMINATION ( 'PRT'||i.ref_form_2, NULL, v_MSG_RESP_VIS, v_ano_form, v_num_form, '0002', NULL, 'P' );
+                        --
+                        v_dados := RPV.VISXML_CS.Extrai_Valor_XML(v_MSG_RESP_VIS, 'AttachmentID', 'ns3:', null, 1);
+                        IF v_dados != 'nada' THEN
+                            v_msg_ok := 1;
+                        END IF;
+                        --
+                        --DEPENDENDO DO RESULTADO
+                        IF (v_msg_ok = 1) THEN
+                            UPDATE PED_EMITIR_VISTOS SET f_est_msg2 = ESTADO_OK, num_tentativas = num_tentativas + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                            COMMIT;
+                        ELSE
+                            IF NVL(i.num_tentativas,0) + 1 = MAX_TENTATIVAS THEN
+                                UPDATE PED_EMITIR_VISTOS SET f_proc = 'E', f_est_msg2 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                COMMIT;
+                                --CONTINUE; -- sai
+                                v_sair := 1;
+                            ELSE
+                                UPDATE PED_EMITIR_VISTOS SET f_est_msg2 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                COMMIT;
+                                --CONTINUE; -- sai
+                                v_sair := 1;
+                            END IF;
+                        END IF;
+                    END IF;
+                END IF;
+
+                IF v_sair = 0 THEN
+                    --------------------------
+                    -- MENSAGEM 3 - FINGER --
+                    -------------------------
+                    IF i.f_est_msg3 IS NULL THEN
+
+                        -- verifica se há dados biometricos para enviar
+                        SELECT count(*) into v_conta FROM BIOMETRIA_INFO WHERE ANO_FORM = v_ano_form AND NUM_FORM = v_num_form AND bio IS NOT NULL;
+
+                        IF v_conta = 0 THEN
+                             UPDATE PED_EMITIR_VISTOS SET f_est_msg3 = ESTADO_NAOAPLI, num_tentativas = 0 WHERE REF_FORM_2 = i.REF_FORM_2;
+                             COMMIT;
+                             v_upd_parecer := 1;
+                        ELSE
+                            -- envia a msg
+                            RPV.VISXML3.PATTAPPDATADDBIOM ( v_ano_form, v_num_form, v_RET_VAL, 'FINGER', v_MSG_RESP_VIS, '0002', NULL );
+
+                            -- MENSAGEM ENVIADA
+                            UPDATE PED_EMITIR_VISTOS SET f_est_msg3 = ESTADO_ENVIADO, num_tentativas = 0 WHERE REF_FORM_2 = i.REF_FORM_2;
+                            COMMIT;
+                            --CONTINUE; -- sai
+                            v_sair := 1;
+                        END IF;
+                    ELSE
+                        IF i.f_est_msg3 in (ESTADO_ENVIADO, ESTADO_SEMRESP) THEN
+                            -- faz retrieve
+                            v_msg_ok := 0;
+                            --DBMS_LOB.CREATETEMPORARY(MSG_RESP_VIS, true);
+                            RPV.VISXML.PRETRIEVALAPPEXAMINATION ( 'PRT'||i.ref_form_2, NULL, v_MSG_RESP_VIS, v_ano_form, v_num_form, '0002', NULL, 'P' );
+                            --
+                            v_dados := RPV.VISXML_CS.Extrai_Valor_XML(v_MSG_RESP_VIS, 'AttachmentID', 'ns3:', null, 2);
+                            IF v_dados != 'nada' THEN
+                                v_msg_ok := 1;
+                            END IF;
+                            --
+                            --DEPENDENDO DO RESULTADO
+                            IF (v_msg_ok = 1) THEN
+                                UPDATE PED_EMITIR_VISTOS SET f_est_msg3 = ESTADO_OK, num_tentativas = num_tentativas + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                COMMIT;
+                                v_upd_parecer := 1;
+                            ELSE
+                                IF NVL(i.num_tentativas,0) + 1 = MAX_TENTATIVAS THEN
+                                    UPDATE PED_EMITIR_VISTOS SET f_proc = 'E', f_est_msg3 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                    COMMIT;
+                                    --CONTINUE; -- sai
+                                    v_sair := 1;
+                                ELSE
+                                    UPDATE PED_EMITIR_VISTOS SET f_est_msg3 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                    COMMIT;
+                                    --CONTINUE; -- sai
+                                    v_sair := 1;
+                                END IF;
+                            END IF;
+                        END IF;
+                    END IF;
+                    --
+                    -----------------------
+                    -- UPDATE DO PARECER --
+                    -----------------------
+                    IF v_upd_parecer = 1 AND v_cod_pare IS NULL THEN
+                        -- update formulario
+                        update formulario set cod_pare = '1' where ref_form_2 = i.ref_form_2 and cod_pare IS NULL;
+                        IF SQL%ROWCOUNT = 1 THEN
+                            -- evolui estado
+                            v_Ret_Val := RPV.TAREFA_MASTER.EVOLUI_ESTADO ( v_ANO_FORM, v_NUM_FORM, 'A' );
+                        END IF;
+                        COMMIT;
+
+                    END IF;
+                    --
+
+                    IF v_sair = 0 THEN
+
+                        -- VALIDA SE EXISTE VINHETA --
+                        BEGIN
+                            SELECT num_vin into v_num_vin FROM VINHETA WHERE ANO_FORM = v_ano_form AND NUM_FORM = v_num_form AND EST_VIN = 'E';
+                        EXCEPTION
+                            WHEN NO_DATA_FOUND THEN
+                                v_obs := 'Não tem vinheta, não pode prosseguir com a concessão/emissão.';
+                                dbms_output.put_line(v_obs);
+                                IF i.obs IS NULL OR i.obs != v_obs THEN
+                                    UPDATE PED_EMITIR_VISTOS SET obs = v_obs WHERE REF_FORM_2 = i.REF_FORM_2;
+                                    COMMIT;
+                                    --CONTINUE;
+                                END IF;
+                                v_sair := 1;
+                            WHEN TOO_MANY_ROWS THEN
+                                v_obs := 'Tem mais de uma vinheta válida, não pode prosseguir com a concessão/emissão.';
+                                dbms_output.put_line(v_obs);
+                                IF i.obs IS NULL OR i.obs != v_obs THEN
+                                    UPDATE PED_EMITIR_VISTOS SET obs = v_obs WHERE REF_FORM_2 = i.REF_FORM_2;
+                                    COMMIT;
+                                    --CONTINUE;
+                                END IF;
+                                v_sair := 1;
+                        END;
+
+                        IF v_sair = 0 THEN
+                            --------------------------
+                            -- MENSAGEM 4 - DECISAO --
+                            --------------------------
+                            IF i.f_est_msg4 IS NULL THEN
+                                -- envia a msg
+                                RPV.VISXML3.PDECCREATEAPPDEC ( i.ref_form_2, NULL, 'G', NULL, '0002', NULL, 'P' );
+                                -- MENSAGEM ENVIADA
+                                UPDATE PED_EMITIR_VISTOS SET f_est_msg4 = ESTADO_ENVIADO, num_tentativas = 0, obs = NULL WHERE REF_FORM_2 = i.REF_FORM_2;
+                                COMMIT;
+                                --CONTINUE; -- sai
+                                v_sair := 1;
+
+                            ELSE
+                                IF i.f_est_msg4 in (ESTADO_ENVIADO, ESTADO_SEMRESP) THEN
+                                    -- faz retrieve
+                                    v_msg_ok := 0;
+                                    --
+                                    RPV.VISXML.PRETRIEVALAPPEXAMINATION ( 'PRT'||i.ref_form_2, NULL, v_MSG_RESP_VIS, v_ano_form, v_num_form, '0002', NULL, 'P' );
+                                    --
+                                    v_dados := RPV.VISXML_CS.Extrai_Valor_XML(v_MSG_RESP_VIS, 'DecisionID', 'ns3:', null, 1);
+                                    IF v_dados != 'nada' THEN
+                                        v_msg_ok := 1;
+                                    END IF;
+                                    --
+                                    --DEPENDENDO DO RESULTADO
+                                    IF (v_msg_ok = 1) THEN
+                                        UPDATE PED_EMITIR_VISTOS SET f_est_msg4 = ESTADO_OK, num_tentativas = num_tentativas + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                        COMMIT;
+                                    ELSE
+                                        IF NVL(i.num_tentativas,0) + 1 = MAX_TENTATIVAS THEN
+                                            UPDATE PED_EMITIR_VISTOS SET f_proc = 'E', f_est_msg4 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                            COMMIT;
+                                            --CONTINUE; -- sai
+                                            v_sair := 1;
+                                        ELSE
+                                            UPDATE PED_EMITIR_VISTOS SET f_est_msg4 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                            COMMIT;
+                                            --CONTINUE; -- sai
+                                            v_sair := 1;
+                                        END IF;
+                                    END IF;
+                                END IF;
+                            END IF;
+
+                            IF v_sair = 0 THEN
+                                -----------------------------
+                                -- MENSAGEM 5 - CREATE VIS --
+                                -----------------------------
+                                IF i.f_est_msg5 IS NULL THEN
+                                    -- envia a msg
+                                    --
+                                    RPV.VISXML3.PDECCREATEVISCREATDEC ( v_ANO_FORM, v_NUM_FORM, v_num_vin, NULL, 'I', '0002', NULL, 'P', 'false' );
+                                    --
+                                    -- MENSAGEM ENVIADA
+                                    UPDATE PED_EMITIR_VISTOS SET f_est_msg5 = ESTADO_ENVIADO, num_tentativas = 0 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                    COMMIT;
+                                    --CONTINUE; -- sai
+                                    v_sair := 1;
+
+                                ELSE
+                                    IF i.f_est_msg5 in (ESTADO_ENVIADO, ESTADO_SEMRESP) THEN
+                                        -- faz retrieve
+                                        v_msg_ok := 0;
+                                        --
+                                        RPV.VISXML.PRETRIEVALAPPEXAMINATION ( 'PRT'||i.ref_form_2, NULL, v_MSG_RESP_VIS, v_ano_form, v_num_form, '0002', NULL, 'P' );
+                                        --
+                                        v_dados := RPV.VISXML_CS.Extrai_Valor_XML(v_MSG_RESP_VIS, 'VisaStickerNumber', 'ns3:', null, 1);
+                                        IF v_dados != 'nada' THEN
+                                            v_msg_ok := 1;
+                                        END IF;
+                                        --
+                                        --DEPENDENDO DO RESULTADO
+                                        IF (v_msg_ok = 1) THEN
+                                            UPDATE PED_EMITIR_VISTOS SET f_est_msg5 = ESTADO_OK, num_tentativas = num_tentativas + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                            COMMIT;
+                                            v_msg5_proc := 1;
+                                        ELSE
+                                            IF NVL(i.num_tentativas,0) + 1 = MAX_TENTATIVAS THEN
+                                                UPDATE PED_EMITIR_VISTOS SET f_proc = 'E', f_est_msg5 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                                COMMIT;
+                                                --CONTINUE; -- sai
+                                                v_sair := 1;
+                                            ELSE
+                                                UPDATE PED_EMITIR_VISTOS SET f_est_msg5 = ESTADO_SEMRESP, num_tentativas = NVL(num_tentativas,0) + 1 WHERE REF_FORM_2 = i.REF_FORM_2;
+                                                COMMIT;
+                                                --CONTINUE; -- sai
+                                                v_sair := 1;
+                                            END IF;
+                                        END IF;
+                                    END IF;
+                                END IF;
+
+                                --
+                                IF v_msg5_proc = 1 THEN
+                                    UPDATE PED_EMITIR_VISTOS SET f_proc = 'S' WHERE REF_FORM_2 = i.REF_FORM_2;
+                                    COMMIT;
+                                END IF;
+                            END IF;
+
+                        END IF;
+                    END IF;
+                END IF;
+            END IF;
+        END LOOP;
+    END;
+
+END;
 /
 
 prompt
@@ -36828,7 +42343,7 @@ prompt
 prompt Creating trigger DBT_FORM_B_INS_P
 prompt =================================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_FORM_B_INS_P
+CREATE OR REPLACE TRIGGER RPV.DBT_FORM_B_INS_P
 AFTER  UPDATE
  ON FORM_B
 FOR EACH ROW
@@ -36893,7 +42408,7 @@ prompt
 prompt Creating trigger DBT_FORM_E_INS
 prompt ===============================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_FORM_E_INS
+CREATE OR REPLACE TRIGGER RPV.DBT_FORM_E_INS
 AFTER  INSERT
  ON FORM_E
 FOR EACH ROW
@@ -37044,7 +42559,7 @@ prompt
 prompt Creating trigger DBT_FORM_I_INS_P
 prompt =================================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_FORM_I_INS_P
+CREATE OR REPLACE TRIGGER RPV.DBT_FORM_I_INS_P
 AFTER  INSERT
  ON FORM_I
 FOR EACH ROW
@@ -37211,7 +42726,7 @@ prompt
 prompt Creating trigger DBT_FORMP_UPD_P
 prompt ================================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_FORMP_UPD_P
+CREATE OR REPLACE TRIGGER RPV.DBT_FORMP_UPD_P
 BEFORE UPDATE
  ON FORM_P
 FOR EACH ROW
@@ -37271,6 +42786,7 @@ IF v_cod_pos = TO_NUMBER(SUBSTR(:new.ref_form_2, 1, 4)) THEN -- Se nÃ£o for Redi
 --ELSE
 --SELECT RPV.SEQ_FORMULARIO.NEXTVAL INTO :new.num_form from dual;
 END IF;
+:new.cri_dat_est := substr(:new.cri_dat,1,10);
 END;
 /
 
@@ -37377,7 +42893,7 @@ prompt
 prompt Creating trigger DBT_FORMZ_INS_P
 prompt ================================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_FORMZ_INS_P
+CREATE OR REPLACE TRIGGER RPV.DBT_FORMZ_INS_P
 AFTER  INSERT
  ON FORM_Z
 FOR EACH ROW
@@ -37796,7 +43312,7 @@ prompt
 prompt Creating trigger DBT_REQUISICAO_INS_P
 prompt =====================================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_REQUISICAO_INS_P
+CREATE OR REPLACE TRIGGER RPV.DBT_REQUISICAO_INS_P
 AFTER  INSERT
  ON REQUISICAO
 FOR EACH ROW
@@ -37923,7 +43439,7 @@ prompt
 prompt Creating trigger DBT_TEMP_REPS_INS
 prompt ==================================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_TEMP_REPS_INS
+CREATE OR REPLACE TRIGGER RPV.DBT_TEMP_REPS_INS
 BEFORE INSERT
  ON TEMP_REPS
 FOR EACH ROW
@@ -37980,10 +43496,25 @@ END;
 /
 
 prompt
+prompt Creating trigger DBT_VINHETA_BEF_INS
+prompt ====================================
+prompt
+CREATE OR REPLACE TRIGGER RPV.DBT_VINHETA_BEF_INS
+BEFORE INSERT
+ ON VINHETA
+FOR EACH ROW
+
+
+BEGIN
+:new.cri_dat_est := substr(:new.cri_dat,1,10);
+END;
+/
+
+prompt
 prompt Creating trigger DBT_VINHETA_INS
 prompt ================================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_VINHETA_INS
+CREATE OR REPLACE TRIGGER RPV.DBT_VINHETA_INS
 AFTER  INSERT
  ON VINHETA
 FOR EACH ROW
@@ -38037,7 +43568,7 @@ prompt
 prompt Creating trigger DBT_VINHETA_INS_P
 prompt ==================================
 prompt
-CREATE OR REPLACE TRIGGER "RPV".DBT_VINHETA_INS_P
+CREATE OR REPLACE TRIGGER RPV.DBT_VINHETA_INS_P
 AFTER  INSERT
  ON VINHETA
 FOR EACH ROW
@@ -38068,7 +43599,7 @@ DECLARE
 	  WHERE ano_lote = :new.ano_lote
             AND num_lote = :new.num_lote
 	    AND cod_pos  = :new.cod_pos
-	    AND est_lote = 'E'
+	    AND est_lote in ('E','U')
 	FOR UPDATE OF ult_num, ult_dat, est_lote;
   CURSOR c2 IS
 	SELECT v.vvtl FROM t_visto v
@@ -38210,6 +43741,22 @@ BEGIN
   IF :NEW.COD_EST = 'CAN' AND :NEW.COD_TAREF = 'FIM_PED' THEN
       UPDATE FORMULARIO SET EMITE_VIN = NULL
       WHERE ANO_FORM = :NEW.ANO_FORM AND NUM_FORM = :NEW.NUM_FORM;
+  END IF;
+END;
+/
+
+prompt
+prompt Creating trigger FORMULARIO_WEB_LIMPA_AGENDA
+prompt ============================================
+prompt
+CREATE OR REPLACE TRIGGER RPV.FORMULARIO_WEB_LIMPA_AGENDA
+AFTER UPDATE ON FORMULARIO_WEB
+FOR EACH ROW
+when (NVL(OLD.NUM_FORM,0) != NVL(NEW.NUM_FORM,0))
+BEGIN
+  IF TRUNC(:NEW.DATA_AGENDAMENTO) > TRUNC(SYSDATE) THEN
+     INSERT INTO LIMPA_AGENDA(NUM_FORM_WEB,TIPO,TRATADO,CRI_UTI,CRI_DAT)
+     VALUES(TO_NUMBER(SUBSTR(:NEW.NUM_FORM_WEB,2)),'P','N',USER,TO_CHAR(SYSDATE,'YYYY/MM/DD HH24:MI:SS'));
   END IF;
 END;
 /
